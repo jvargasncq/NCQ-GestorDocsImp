@@ -218,7 +218,8 @@
   }
 
   function buildEmailShell(config, bodyHtml, greeting = "") {
-    const countryData = CONFIG.countries[val("country")] || CONFIG.countries.CR;
+    // Falls back to Costa Rica (CR) configurations
+    const countryData = CONFIG.countries.CR;
     const greetingHtml = greeting ? `<p style="margin: 0 0 12px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">${greeting}</p>` : "";
     const theme = getBrandTheme();
     return `<!DOCTYPE html>
@@ -559,7 +560,33 @@
     }
   };
 
+  function updateSubject() {
+    const clientNameText = val("clientName").trim() || "Razón Comercial";
+    let baseSubject = "";
+    
+    if (activeTab === "capacitacion") {
+      const isMulti = $("isMultiTopic").checked;
+      if (isMulti) {
+        const selectedTopics = Array.from(document.querySelectorAll(".multi-topic-cb:checked")).map(cb => cb.dataset.topic);
+        baseSubject = "Minuta Razón Comercial Capacitación Multi-tema" + (selectedTopics.length > 0 ? " (" + selectedTopics.join(", ") + ")" : "");
+      } else {
+        baseSubject = `Minuta Razón Comercial Capacitación de ${val("capacitacionTopic")}`;
+      }
+    } else if (activeTab === "puestaEnMarcha") {
+      baseSubject = "Minuta Razón Comercial Puesta en Marcha";
+    } else {
+      baseSubject = `Minuta Razón Comercial ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`;
+    }
+    
+    const finalSubject = baseSubject.replace("Razón Comercial", clientNameText);
+    const subjectEl = $("subject");
+    if (subjectEl) {
+      subjectEl.textContent = finalSubject;
+    }
+  }
+
   function render() {
+    updateSubject();
     const html = renderers[activeTab]();
     const iframe = $("preview");
     if (iframe) {
@@ -632,18 +659,9 @@
     document.querySelectorAll("[id^='section']").forEach(s => s.classList.toggle("hidden", s.id !== `section${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`));
     if (tabId === "capacitacion") {
       updateCapacitacionUI();
-      const isMulti = $("isMultiTopic").checked;
-      if (isMulti) {
-        $("subject").value = "Minuta Razón Comercial Capacitación Multi-tema";
-      } else {
-        $("subject").value = `Minuta Razón Comercial Capacitación de ${val("capacitacionTopic")}`;
-      }
-    } else if (tabId === "puestaEnMarcha") {
-      $("subject").value = "Minuta Razón Comercial Puesta en Marcha";
     } else {
-      $("subject").value = `Minuta Razón Comercial ${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`;
+      render();
     }
-    render();
     saveState();
   }
 
@@ -768,7 +786,6 @@
   const capTopicSelect = $("capacitacionTopic");
   if (capTopicSelect) {
     capTopicSelect.onchange = () => {
-      $("subject").value = `Minuta Razón Comercial Capacitación de ${val("capacitacionTopic")}`;
       updateCapacitacionUI();
       saveState();
     };
@@ -780,11 +797,6 @@
       const isMulti = isMultiCheckbox.checked;
       $("singleTopicContainer").classList.toggle("hidden", isMulti);
       $("multiTopicContainer").classList.toggle("hidden", !isMulti);
-      if (isMulti) {
-        $("subject").value = "Minuta Razón Comercial Capacitación Multi-tema";
-      } else {
-        $("subject").value = `Minuta Razón Comercial Capacitación de ${val("capacitacionTopic")}`;
-      }
       updateCapacitacionUI();
       saveState();
     };
