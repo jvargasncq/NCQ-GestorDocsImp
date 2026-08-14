@@ -69,7 +69,7 @@
     "Proveedores": ["Se explica la pantalla de creación y mantenimiento de proveedores."],
     "Registro de compras manual": ["Se explica el proceso de registro de compras de forma manual."],
     "Registro de compras Factura Digital XML": ["Se explica el proceso de carga de archivos XML al sistema y el proceso para crear un registro de compras.", "Creación y vinculación de código - artículo - proveedor desde factura digital.", "Asignación de códigos CABYS desde factura digital."],
-    "Notas de crédito compras": ["Registro de notas de crédito desde el registro de compras and desde la pantalla de Notas de crédito"],
+    "Notas de crédito compras": ["Registro de notas de crédito desde el registro de compras y desde la pantalla de Notas de crédito"],
     "Análisis": ["Creación de familias y marcas desde registro de compras manual", "Revisión de líneas, costos, impuestos, descuentos, utilidades, precios.", "Revisión de totales.", "Envío de precios a romana e impresión de etiquetas desde Registro de compras.", "Aplicación de inventarios.", "Aplicación de precios.", "Finalización de la compra.", "Envío de la compra a CxP."],
 
     // Inventarios
@@ -150,14 +150,7 @@
 
   // === GENERACIÓN DE PLANTILLAS ===
   const getBrandTheme = () => {
-    let version = "Standard";
-    if (activeTab === "instalacion") {
-      version = val("quposVersion");
-    } else if (activeTab === "migracion") {
-      version = val("quposVersionMigracion");
-    } else if (activeTab === "capacitacion") {
-      version = val("quposVersionCapacitacion");
-    }
+    const version = val("quposVersion");
 
     const themes = {
       Lite: {
@@ -365,7 +358,7 @@
         <ul style="margin: 0 0 20px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">
           <li style="margin-bottom: 6px;">Instalación de Qupos Server + Cliente</li>
           <li style="margin-bottom: 6px;">Base de datos migrada desde: <strong>${escapeHtml(data.prevSystem)}</strong></li>
-          <li style="margin-bottom: 6px;">Versión 3.7.50 | Licencias: <strong>${data.licenseCount}</strong> (${data.quposVersion})</li>
+          <li style="margin-bottom: 6px;">Versión 3.7.56 | Licencias: <strong>${data.licenseCount}</strong> (${data.quposVersion})</li>
           <li style="margin-bottom: 6px;">Respaldos Cloud: <span style="color: #00a8ff;">${escapeHtml(data.backupEmail)}</span></li>
         </ul>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0;">Pendientes cliente:</h3>
@@ -381,10 +374,10 @@
     migracion: () => {
       const check = id => $(id).checked;
       const data = {
-        installDate: formatDate(val("installDateMigracion")),
-        implanterNCQ: val("implanterNCQMigracion"),
-        clientName: val("clientNameMigracion"),
-        clientContact: val("clientContactMigracion"),
+        installDate: formatDate(val("installDate")),
+        implanterNCQ: val("implanterNCQ"),
+        clientName: val("clientName"),
+        clientContact: val("clientContact"),
         prevSystem: val("prevSystemMigracion"),
         ncqPendings: val("ncqPendingsMigracion"),
         items: [
@@ -495,9 +488,9 @@
       const body = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333; border-collapse: collapse;">
           <tr><td style="padding: 4px 0;"><strong>Tema:</strong> ${escapeHtml(topicText)}</td></tr>
-          <tr><td style="padding: 4px 0;"><strong>Fecha:</strong> ${formatDate(val("installDateCapacitacion"))}</td></tr>
+          <tr><td style="padding: 4px 0;"><strong>Fecha:</strong> ${formatDate(val("installDate"))}</td></tr>
           ${timeDetails}
-          <tr><td style="padding: 4px 0;"><strong>Razón comercial:</strong> ${escapeHtml(val("clientNameCapacitacion"))}</td></tr>
+          <tr><td style="padding: 4px 0;"><strong>Razón comercial:</strong> ${escapeHtml(val("clientName"))}</td></tr>
           <tr>
             <td style="padding: 8px 0 4px 0;">
               <strong>Asistentes:</strong>
@@ -506,7 +499,7 @@
               </ul>
             </td>
           </tr>
-          <tr><td style="padding: 4px 0;"><strong>Implantador NCQ:</strong> ${val("implanterNCQCapacitacion")}</td></tr>
+          <tr><td style="padding: 4px 0;"><strong>Implantador NCQ:</strong> ${val("implanterNCQ")}</td></tr>
         </table>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Módulos impartidos:</h3>
         ${modulesHtml}
@@ -531,10 +524,11 @@
     },
     puestaEnMarcha: () => {
       const data = {
-        installDate: formatDate(val("installDatePuestaEnMarcha")),
-        implanterNCQ: val("implanterNCQPuestaEnMarcha"),
-        clientName: val("clientNamePuestaEnMarcha"),
-        clientContact: val("clientContactPuestaEnMarcha"),
+        installDate: formatDate(val("installDate")),
+        implanterNCQ: val("implanterNCQ"),
+        clientName: val("clientName"),
+        clientContact: val("clientContact"),
+        quposVersion: val("quposVersion"),
         workDone: val("workDonePuestaEnMarcha"),
         clientPendings: val("clientPendingsPuestaEnMarcha"),
         ncqPendings: val("ncqPendingsPuestaEnMarcha")
@@ -546,6 +540,7 @@
           <tr><td style="padding: 4px 0;"><strong>Fecha:</strong> ${data.installDate}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Razón comercial:</strong> ${escapeHtml(data.clientName)}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Cliente a cargo:</strong> ${escapeHtml(data.clientContact)}</td></tr>
+          <tr><td style="padding: 4px 0;"><strong>Versión Qupos:</strong> ${data.quposVersion}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Implantador NCQ:</strong> ${data.implanterNCQ}</td></tr>
         </table>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Trabajo realizado:</h3>
@@ -654,7 +649,7 @@
 
   // Populate NCQ Implanters dropdown lists dynamically
   function populateImplanters() {
-    const selects = ["implanterNCQ", "implanterNCQMigracion", "implanterNCQCapacitacion", "implanterNCQPuestaEnMarcha"];
+    const selects = ["implanterNCQ"];
     selects.forEach(id => {
       const select = $(id);
       if (select) {
@@ -666,7 +661,7 @@
   // Pre-populate input dates to today's date
   function initializeDates() {
     const today = new Date().toISOString().split("T")[0];
-    const dateIds = ["installDate", "installDateMigracion", "installDateCapacitacion", "installDatePuestaEnMarcha", "dateMigracionCxC", "dateMigracionCxP"];
+    const dateIds = ["installDate", "dateMigracionCxC", "dateMigracionCxP"];
     dateIds.forEach(id => {
       const el = $(id);
       if (el && !el.value) {

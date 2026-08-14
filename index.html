@@ -29,7 +29,6 @@
       <div class="topbar-main">
         <div class="navlinks" aria-label="Navegación principal">
           <a class="navlink active" href="index.html">Minutas</a>
-          <a class="navlink" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">Checklists</a>
           <a class="navlink" href="Guia_Gmail_HubSpot.html">Guía</a>
         </div>
       </div>
@@ -63,54 +62,57 @@
         </div>
       </div>
 
+      <hr class="hr">
+      <h2>Campos obligatorios</h2>
+
+      <div class="row">
+        <div>
+          <label>Fecha</label>
+          <input type="date" id="installDate">
+        </div>
+        <div>
+          <label>Implantador NCQ</label>
+          <select id="implanterNCQ">
+            <!-- Carga dinámica desde JS -->
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Razón comercial</label>
+          <input id="clientName" placeholder="Razón Comercial">
+        </div>
+        <div>
+          <label>Cliente a cargo</label>
+          <input id="clientContact" placeholder="Nombre de la persona en la empresa">
+        </div>
+      </div>
+
+      <div>
+        <label>Licencia Qupos</label>
+        <select id="quposVersion">
+          <option value="Lite">Lite</option>
+          <option value="Standard" selected>Standard</option>
+          <option value="ERP">ERP</option>
+        </select>
+      </div>
+
       <div id="sectionInstalacion">
         <hr class="hr">
-        <div class="row">
-          <div>
-            <label>Fecha</label>
-            <input type="date" id="installDate">
-          </div>
-          <div>
-            <label>Implantador NCQ</label>
-            <select id="implanterNCQ">
-              <!-- Carga dinámica desde JS -->
-            </select>
-          </div>
-        </div>
-
-        <label>Razón comercial</label>
-        <input id="clientName" placeholder="Razón Comercial">
-
-        <label>Cliente a cargo</label>
-        <input id="clientContact" placeholder="Nombre de la persona en la empresa">
-
-        <hr class="hr">
-
         <div class="row">
           <div>
             <label>Sistema anterior (Migración)</label>
             <input id="prevSystem" placeholder="Ej: Logosoft">
           </div>
           <div>
-            <label>Licencia Qupos</label>
-            <select id="quposVersion">
-              <option value="Lite">Lite</option>
-              <option value="Standard" selected>Standard</option>
-              <option value="ERP">ERP</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
             <label>Cantidad de Licencias</label>
             <input type="number" id="licenseCount" value="1">
           </div>
-          <div>
-            <label>Correo Respaldos (Cloud)</label>
-            <input id="backupEmail" placeholder="ejemplocorreo@gmail.com">
-          </div>
         </div>
+
+        <label>Correo Respaldos (Cloud)</label>
+        <input id="backupEmail" placeholder="ejemplocorreo@gmail.com">
 
         <label>Pendientes Cliente</label>
         <textarea id="clientPendings" placeholder="Lista de tareas del cliente..."></textarea>
@@ -121,41 +123,8 @@
 
       <div id="sectionMigracion" class="hidden">
         <hr class="hr">
-        <div class="row">
-          <div>
-            <label>Fecha</label>
-            <input type="date" id="installDateMigracion">
-          </div>
-          <div>
-            <label>Implantador NCQ</label>
-            <select id="implanterNCQMigracion">
-              <!-- Carga dinámica desde JS -->
-            </select>
-          </div>
-        </div>
-
-        <label>Razón comercial</label>
-        <input id="clientNameMigracion" placeholder="Razón Comercial">
-
-        <label>Cliente a cargo</label>
-        <input id="clientContactMigracion" placeholder="Nombre de la persona en la empresa">
-
-        <hr class="hr">
-
-        <div class="row">
-          <div>
-            <label>Sistema anterior (Migración)</label>
-            <input id="prevSystemMigracion" placeholder="Ej: Logosoft">
-          </div>
-          <div>
-            <label>Licencia Qupos</label>
-            <select id="quposVersionMigracion">
-              <option value="Lite">Lite</option>
-              <option value="Standard" selected>Standard</option>
-              <option value="ERP">ERP</option>
-            </select>
-          </div>
-        </div>
+        <label>Sistema anterior (Migración)</label>
+        <input id="prevSystemMigracion" placeholder="Ej: Logosoft">
 
         <label>Incluir en Trabajo Realizado:</label>
         <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
@@ -228,18 +197,6 @@
           <label style="margin: 0 0 8px; font-weight: 700; color: #475569;">Seleccione los temas dictados:</label>
           <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
             <!-- Generado dinámicamente -->
-          </div>
-        </div>
-        <div class="row">
-          <div>
-            <label>Fecha</label>
-            <input type="date" id="installDateCapacitacion">
-          </div>
-          <div>
-            <label>Implantador NCQ</label>
-            <select id="implanterNCQCapacitacion">
-              <!-- Carga dinámica desde JS -->
-            </select>
           </div>
         </div>
 
@@ -320,20 +277,6 @@
           </div>
         </div>
 
-        <div class="row">
-          <div>
-            <label>Razón comercial</label>
-            <input id="clientNameCapacitacion" placeholder="Razón Comercial">
-          </div>
-          <div>
-            <label>Licencia Qupos</label>
-            <select id="quposVersionCapacitacion">
-              <option value="Lite">Lite</option>
-              <option value="Standard" selected>Standard</option>
-              <option value="ERP">ERP</option>
-            </select>
-          </div>
-        </div>
         <label>Asistentes (uno por línea)</label>
         <textarea id="clientContactCapacitacion" placeholder="Nombre de los asistentes..."
           style="min-height: 100px;"></textarea>
@@ -372,25 +315,6 @@
 
       <div id="sectionPuestaEnMarcha" class="hidden">
         <hr class="hr">
-        <div class="row">
-          <div>
-            <label>Fecha</label>
-            <input type="date" id="installDatePuestaEnMarcha">
-          </div>
-          <div>
-            <label>Implantador NCQ</label>
-            <select id="implanterNCQPuestaEnMarcha">
-              <!-- Carga dinámica desde JS -->
-            </select>
-          </div>
-        </div>
-
-        <label>Razón comercial</label>
-        <input id="clientNamePuestaEnMarcha" placeholder="Razón Comercial">
-
-        <label>Cliente a cargo</label>
-        <input id="clientContactPuestaEnMarcha" placeholder="Nombre de la persona en la empresa">
-
         <label>Trabajo Realizado</label>
         <textarea id="workDonePuestaEnMarcha" placeholder="Describa el trabajo realizado..."></textarea>
 
