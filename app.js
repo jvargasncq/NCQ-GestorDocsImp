@@ -613,6 +613,31 @@
   }
 
   function render() {
+    // Dynamic panel visibility sync based on switches
+    const checkQupos = $("checkInstalacionQupos") && $("checkInstalacionQupos").checked;
+    const checkPinpads = $("checkInstalacionPinPads") && $("checkInstalacionPinPads").checked;
+    
+    const quposDiv = $("divQuposFields");
+    if (quposDiv) {
+      quposDiv.classList.toggle("hidden", !checkQupos);
+    }
+    const pinpadsDiv = $("divPinPadsFields");
+    if (pinpadsDiv) {
+      pinpadsDiv.classList.toggle("hidden", !checkPinpads);
+    }
+
+    // Dynamic Migracion visibility sync
+    const checkCxC = $("checkMigracionCuentasPorCobrar") && $("checkMigracionCuentasPorCobrar").checked;
+    const divCxC = $("divDateCxC");
+    if (divCxC) {
+      divCxC.classList.toggle("hidden", !checkCxC);
+    }
+    const checkCxP = $("checkMigracionCuentasPorPagar") && $("checkMigracionCuentasPorPagar").checked;
+    const divCxP = $("divDateCxP");
+    if (divCxP) {
+      divCxP.classList.toggle("hidden", !checkCxP);
+    }
+
     updateSubject();
     const html = renderers[activeTab]();
     const iframe = $("preview");
@@ -646,6 +671,17 @@
 
   function updateCapacitacionUI() {
     const isMulti = $("isMultiTopic").checked;
+    
+    // Dynamic single vs multi topic container visibility sync
+    const singleContainer = $("singleTopicContainer");
+    if (singleContainer) {
+      singleContainer.classList.toggle("hidden", isMulti);
+    }
+    const multiContainer = $("multiTopicContainer");
+    if (multiContainer) {
+      multiContainer.classList.toggle("hidden", !isMulti);
+    }
+
     const container = $("capacitacionCheckboxes");
     if (!container) return;
     container.innerHTML = "";
@@ -831,38 +867,9 @@
     };
   }
 
-  const installQuposCheckbox = $("checkInstalacionQupos");
-  if (installQuposCheckbox) {
-    installQuposCheckbox.onchange = () => {
-      const active = installQuposCheckbox.checked;
-      const quposDiv = $("divQuposFields");
-      if (quposDiv) {
-        quposDiv.classList.toggle("hidden", !active);
-      }
-      render();
-      saveState();
-    };
-  }
-
-  const installPinpadsCheckbox = $("checkInstalacionPinPads");
-  if (installPinpadsCheckbox) {
-    installPinpadsCheckbox.onchange = () => {
-      const active = installPinpadsCheckbox.checked;
-      const pinpadsDiv = $("divPinPadsFields");
-      if (pinpadsDiv) {
-        pinpadsDiv.classList.toggle("hidden", !active);
-      }
-      render();
-      saveState();
-    };
-  }
-
   const isMultiCheckbox = $("isMultiTopic");
   if (isMultiCheckbox) {
     isMultiCheckbox.onchange = () => {
-      const isMulti = isMultiCheckbox.checked;
-      $("singleTopicContainer").classList.toggle("hidden", isMulti);
-      $("multiTopicContainer").classList.toggle("hidden", !isMulti);
       updateCapacitacionUI();
       saveState();
     };
