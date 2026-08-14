@@ -59,8 +59,7 @@
     "Liquidaciones": ["Liquidaciones (uso administrativo)", "Liquidaciones en Dispositivo móvil (vendedor/repartidor)"],
     "Handheld": ["Inventarios", "Compras"],
     "Reporteria (Lite/Estandar)": [...REPORTERIA_COMMON_TOPICS],
-    "Reporteria (Rutas)": ["Pantalla de consultas ventas", "Pantalla de consultas compras", "Pantalla de consultas inventarios", "Pantalla de D104 / Detalle D104", "Recepción de documentos electrónicos", "Pantalla de consultas de Rutas", "Filtros, agrupar datos, tablas dinámicas", "Exportar datos"],
-    "PinPads": ["Configuración de PinPads"]
+    "Reporteria (Rutas)": ["Pantalla de consultas ventas", "Pantalla de consultas compras", "Pantalla de consultas inventarios", "Pantalla de D104 / Detalle D104", "Recepción de documentos electrónicos", "Pantalla de consultas de Rutas", "Filtros, agrupar datos, tablas dinámicas", "Exportar datos"]
   };
 
   const CAPACITACION_DETAILS = {
@@ -121,10 +120,7 @@
     "Recepción de documentos electrónicos": ["Uso de consulta desde Qupos o Utilitario Cabys."],
     "Filtros, agrupar datos, tablas dinámicas": [],
     "Exportar datos": [],
-    "Pantalla de consultas de Rutas": ["Efectividad de clientes.", "Mercadería sin facturar.", "Tiempos de ventas."],
-
-    // PinPads
-    "Configuración de PinPads": ["Se configuran xnumerox PinPads en la versión de integración 3.11.3.7.", "Se establecen xnumerox terminales BAC Contado.", "Se realizan las pruebas con facturas en terminals de contado (Adjunto).", "Se explica como realizar cobros con la integración, pagos multitarjeta y pagos mixtos.", "Se explica como realizar anulaciones de pagos y cierre PinPad."]
+    "Pantalla de consultas de Rutas": ["Efectividad de clientes.", "Mercadería sin facturar.", "Tiempos de ventas."]
   };
 
   let activeTab = "instalacion";
@@ -346,6 +342,14 @@
         ncqPendings: val("ncqPendings")
       };
       const theme = getBrandTheme();
+      const checkPinpads = $("checkInstalacionPinPads") && $("checkInstalacionPinPads").checked;
+      const pinpadsHtml = checkPinpads ? `
+          <li style="margin-bottom: 6px;">Se configuran <strong>${val("pinpadCount", "1")}</strong> PinPads en la versión de integración 3.11.3.7.</li>
+          <li style="margin-bottom: 6px;">Se establecen <strong>${val("terminalCount", "1")}</strong> terminales BAC Contado.</li>
+          <li style="margin-bottom: 6px;">Se realizan las pruebas con facturas en terminales de contado (Adjunto).</li>
+          <li style="margin-bottom: 6px;">Se explica cómo realizar cobros con la integración, pagos multitarjeta y pagos mixtos.</li>
+          <li style="margin-bottom: 6px;">Se explica cómo realizar anulaciones de pagos y cierre PinPad.</li>
+      ` : "";
       const body = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333; border-collapse: collapse;">
           <tr><td style="padding: 4px 0;"><strong>Tema:</strong> Instalación y configuración</td></tr>
@@ -360,6 +364,7 @@
           <li style="margin-bottom: 6px;">Base de datos migrada desde: <strong>${escapeHtml(data.prevSystem)}</strong></li>
           <li style="margin-bottom: 6px;">Versión 3.7.56 | Licencias: <strong>${data.licenseCount}</strong> (${data.quposVersion})</li>
           <li style="margin-bottom: 6px;">Respaldos Cloud: <span style="color: #00a8ff;">${escapeHtml(data.backupEmail)}</span></li>
+          ${pinpadsHtml}
         </ul>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0;">Pendientes cliente:</h3>
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
@@ -472,13 +477,6 @@
               <ul style="margin: 0 0 14px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">
                 ${points.map(p => {
                   let text = escapeHtml(p);
-                  if (topic === "PinPads") {
-                    if (text.includes("PinPads")) {
-                      text = text.replace("xnumerox", val("pinpadCount", "1"));
-                    } else if (text.includes("terminales")) {
-                      text = text.replace("xnumerox", val("terminalCount", "1"));
-                    }
-                  }
                   return `<li style="${p.startsWith("\u00A0") ? 'list-style-type:none; margin-bottom: 4px;' : 'margin-bottom: 4px;'}">${text}</li>`;
                 }).join("")}
               </ul>`;
@@ -643,12 +641,6 @@
       });
     });
 
-    const extraDiv = $("divPinPadsExtra");
-    if (extraDiv) {
-      const pinpadsActive = activeTopics.includes("PinPads");
-      extraDiv.classList.toggle("hidden", !pinpadsActive);
-    }
-
     render();
   }
 
@@ -773,6 +765,12 @@
         });
       }
 
+      const installPinpadsCheckbox = $("checkInstalacionPinPads");
+      const extraDiv = $("divPinPadsExtra");
+      if (installPinpadsCheckbox && extraDiv) {
+        extraDiv.classList.toggle("hidden", !installPinpadsCheckbox.checked);
+      }
+
       switchTab(activeTab);
     } catch (e) {
       console.error("Error loading state from localStorage", e);
@@ -786,6 +784,19 @@
   if (capTopicSelect) {
     capTopicSelect.onchange = () => {
       updateCapacitacionUI();
+      saveState();
+    };
+  }
+
+  const installPinpadsCheckbox = $("checkInstalacionPinPads");
+  if (installPinpadsCheckbox) {
+    installPinpadsCheckbox.onchange = () => {
+      const active = installPinpadsCheckbox.checked;
+      const extraDiv = $("divPinPadsExtra");
+      if (extraDiv) {
+        extraDiv.classList.toggle("hidden", !active);
+      }
+      render();
       saveState();
     };
   }
