@@ -612,10 +612,10 @@
     } else if (activeTab === "capacitacion") {
       const isMulti = $("isMultiTopic").checked;
       if (isMulti) {
-        const selectedTopics = Array.from(document.querySelectorAll(".multi-topic-cb:checked")).map(cb => cb.dataset.topic);
+        const selectedTopics = Array.from(document.querySelectorAll(".multi-topic-cb:checked")).map(cb => getTopicLabel(cb.dataset.topic));
         baseSubject = "Minuta Razón Comercial Capacitación Multi-tema" + (selectedTopics.length > 0 ? " (" + selectedTopics.join(", ") + ")" : "");
       } else {
-        baseSubject = `Minuta Razón Comercial Capacitación de ${val("capacitacionTopic")}`;
+        baseSubject = `Minuta Razón Comercial Capacitación de ${getTopicLabel(val("capacitacionTopic"))}`;
       }
     } else if (activeTab === "puestaEnMarcha") {
       baseSubject = "Minuta Razón Comercial Puesta en Marcha";
