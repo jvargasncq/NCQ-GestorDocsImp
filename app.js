@@ -766,7 +766,8 @@
         const el = $(id);
         if (el) {
           if (el.type === "checkbox") {
-            el.checked = state[id];
+            // PinPads switch always defaults to off when first getting into the page
+            el.checked = (id === "checkInstalacionPinPads") ? false : state[id];
           } else {
             el.value = state[id];
           }
