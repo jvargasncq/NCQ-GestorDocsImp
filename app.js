@@ -647,11 +647,38 @@
     return html;
   }
 
+  function getAllowedTopics() {
+    const version = val("quposVersion");
+    const allTopics = Object.keys(CAPACITACION_TOPICS);
+    if (version === "Lite") {
+      return ["Compras", "Inventarios - CxP", "Facturación - CxC", "Reporteria (Lite/Estandar)"];
+    }
+    return allTopics;
+  }
+
+  function populateCapacitacionTopics() {
+    const select = $("capacitacionTopic");
+    if (!select) return;
+    
+    const currentVal = select.value;
+    const allowed = getAllowedTopics();
+    
+    select.innerHTML = allowed.map(topic => `<option value="${topic}">${topic}</option>`).join("");
+    
+    if (allowed.includes(currentVal)) {
+      select.value = currentVal;
+    } else if (allowed.length > 0) {
+      select.value = allowed[0];
+    }
+  }
+
   function initMultiTopicUI() {
     const grid = document.querySelector("#multiTopicContainer > div");
     if (!grid) return;
     grid.innerHTML = "";
-    Object.keys(CAPACITACION_TOPICS).forEach(topic => {
+    
+    const allowed = getAllowedTopics();
+    allowed.forEach(topic => {
       const wrapper = document.createElement("div");
       wrapper.className = "switch-container";
       wrapper.innerHTML = `
@@ -810,6 +837,10 @@
         }
       });
 
+      // Sync Capacitacion topic choices with restored quposVersion
+      populateCapacitacionTopics();
+      initMultiTopicUI();
+
       // Restore multi-topic selections
       if (state.multiTopicCheckboxes) {
         Object.keys(state.multiTopicCheckboxes).forEach(topic => {
@@ -875,8 +906,19 @@
     };
   }
 
+  const versionSelect = $("quposVersion");
+  if (versionSelect) {
+    versionSelect.onchange = () => {
+      populateCapacitacionTopics();
+      initMultiTopicUI();
+      updateCapacitacionUI();
+      render();
+      saveState();
+    };
+  }
+
   document.querySelectorAll("input, select, textarea").forEach(el => {
-    if (el.id !== "isMultiTopic" && el.id !== "capacitacionTopic") {
+    if (el.id !== "isMultiTopic" && el.id !== "capacitacionTopic" && el.id !== "quposVersion") {
       el.oninput = () => {
         render();
         saveState();
@@ -1015,6 +1057,7 @@
   // === INIT ===
   populateImplanters();
   initializeDates();
+  populateCapacitacionTopics();
   initMultiTopicUI();
 
   // Set default visibility of Qupos/PinPads containers before loading cache
