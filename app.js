@@ -128,6 +128,15 @@
   // === FUNCIONES UTILITARIAS ===
   const escapeHtml = str => String(str ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
   const formatList = txt => (txt || "").trim() ? escapeHtml(txt).replace(/\n/g, '<br>') : "Sin Pendientes";
+  const formatBulletPoints = (txt, emptyText = "Ninguno") => {
+    const lines = (txt || "").split("\n").map(l => l.trim()).filter(l => l);
+    if (lines.length === 0) {
+      return `<p style="margin: 0; font-family: Arial, sans-serif; font-size: 15px; color: #777777; font-style: italic;">${emptyText}</p>`;
+    }
+    return `<ul style="margin: 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">
+      ${lines.map(l => `<li style="margin-bottom: 4px;">${escapeHtml(l)}</li>`).join("")}
+    </ul>`;
+  };
   const formatDate = dateStr => {
     if (!dateStr) return "";
     const [year, month, day] = dateStr.split("-");
@@ -247,9 +256,9 @@
         padding: 0 !important;
       }
       /* Format the email card to center nicely on standard printable area */
-      table[width="600"] {
+      table[width="660"] {
         width: 100% !important;
-        max-width: 600px !important;
+        max-width: 660px !important;
         min-width: 0 !important;
         margin: 0 auto !important;
         box-shadow: none !important;
@@ -267,18 +276,18 @@
     <tr>
       <td align="center" valign="top" style="padding:40px 0; text-align:center;">
         <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
         <tr>
-        <td align="center" valign="top" width="600">
+        <td align="center" valign="top" width="660">
         <![endif]-->
-        <table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; min-width:600px; margin-left:auto; margin-right:auto; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
+        <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin-left:auto; margin-right:auto; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
           <tr>
-            <td align="center" width="600" style="width:600px; background-color:${theme.darkColor}; padding:30px; text-align:center; border-bottom:4px solid ${theme.lightColor};">
+            <td align="center" width="660" style="width:660px; background-color:${theme.darkColor}; padding:30px; text-align:center; border-bottom:4px solid ${theme.lightColor};">
               <img src="${resolveUrl(theme.logo)}" alt="Qupos" width="90" height="90" style="width:90px; height:90px; border:0; display:inline-block;">
             </td>
           </tr>
           <tr>
-            <td width="600" style="width:600px; padding:34px 28px; color:#333333; font-family:Arial,sans-serif; font-size:15px; line-height:1.6;">
+            <td width="660" style="width:660px; padding:34px 28px; color:#333333; font-family:Arial,sans-serif; font-size:15px; line-height:1.6;">
               ${greetingHtml}${bodyHtml}
               <p class="no-print" style="margin:20px 0 8px; font-family:Arial,sans-serif; font-size:15px; color:#333333;">Centro de ayuda:</p>
               <table class="no-print" role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border-spacing:0; margin-bottom:16px;">
@@ -300,7 +309,7 @@
             </td>
           </tr>
           <tr>
-            <td width="600" style="width:600px; background-color:#f2f2f2; padding:24px 16px; text-align:center; font-family:Arial,sans-serif; font-size:12px; color:#666666;">
+            <td width="660" style="width:660px; background-color:#f2f2f2; padding:24px 16px; text-align:center; font-family:Arial,sans-serif; font-size:12px; color:#666666;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border-spacing:0;">
                 <tr class="no-print">
                   <td align="center" style="font-weight:700; color:${theme.darkColor}; margin-bottom:6px; font-family:Arial,sans-serif; font-size:13px; padding-bottom:6px;">Síguenos en nuestras redes</td>
@@ -567,18 +576,18 @@
           <tr><td style="padding: 4px 0;"><strong>Versión Qupos:</strong> ${data.quposVersion}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Implantador NCQ:</strong> ${data.implanterNCQ}</td></tr>
         </table>
-        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Trabajo realizado:</h3>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
-          <tr><td style="padding: 12px 14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">${formatList(data.workDone)}</td></tr>
-        </table>
+        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Se aclaran dudas de los siguientes temas:</h3>
+        <div style="margin: 10px 0 20px 0;">
+          ${formatBulletPoints(data.workDone, "Sin temas aclarados")}
+        </div>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0;">Pendientes cliente:</h3>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
-          <tr><td style="padding: 12px 14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">${formatList(data.clientPendings)}</td></tr>
-        </table>
+        <div style="margin: 10px 0 20px 0;">
+          ${formatBulletPoints(data.clientPendings, "Sin pendientes del cliente")}
+        </div>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0;">Pendientes NCQ:</h3>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 10px 0;">
-          <tr><td style="padding: 12px 14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">${formatList(data.ncqPendings)}</td></tr>
-        </table>`;
+        <div style="margin: 10px 0 20px 0;">
+          ${formatBulletPoints(data.ncqPendings, "Sin pendientes de NCQ")}
+        </div>`;
       return buildEmailShell(CONFIG, body);
     }
   };
