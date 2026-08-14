@@ -40,9 +40,9 @@
   ];
 
   const REPORTERIA_COMMON_TOPICS = [
-    "Pantalla de consultas ventas",
-    "Pantalla de consultas compras",
-    "Pantalla de consultas inventarios",
+    "Pantalla de consultas de ventas",
+    "Pantalla de consultas de compras",
+    "Pantalla de consultas de inventarios",
     "Pantalla de D104 / Detalle D104",
     "Recepción de documentos electrónicos",
     "Filtros, agrupar datos, tablas dinámicas",
@@ -58,8 +58,8 @@
     "Rutas": ["Proceso de Rutas"],
     "Liquidaciones": ["Liquidaciones (uso administrativo)", "Liquidaciones en Dispositivo móvil (vendedor/repartidor)"],
     "Handheld": ["Inventarios", "Compras"],
-    "Reporteria (Lite/Estandar)": [...REPORTERIA_COMMON_TOPICS],
-    "Reporteria (Rutas)": ["Pantalla de consultas ventas", "Pantalla de consultas compras", "Pantalla de consultas inventarios", "Pantalla de D104 / Detalle D104", "Recepción de documentos electrónicos", "Pantalla de consultas de Rutas", "Filtros, agrupar datos, tablas dinámicas", "Exportar datos"]
+    "Reportería (Lite/Estándar)": [...REPORTERIA_COMMON_TOPICS],
+    "Reportería (Rutas)": ["Pantalla de consultas de ventas", "Pantalla de consultas de compras", "Pantalla de consultas de inventarios", "Pantalla de D104 / Detalle D104", "Recepción de documentos electrónicos", "Pantalla de consultas de Rutas", "Filtros, agrupar datos, tablas dinámicas", "Exportar datos"]
   };
 
   const CAPACITACION_DETAILS = {
@@ -73,13 +73,13 @@
 
     // Inventarios
     "Artículos": ["Se explica de forma detallada la pantalla de mantenimiento de Artículos."],
-    "Familias": ["Se explica la forma detallada la pantalla de clasificación de inventarios.", "Se menciona el uso de pantallas de mantenimiento adicionales: departamentos, subcategorías y categorías."],
+    "Familias": ["Se explica de forma detallada la pantalla de clasificación de inventarios.", "Se menciona el uso de pantallas de mantenimiento adicionales: departamentos, subcategorías y categorías."],
     "Marcas": ["Se explica de forma detallada la pantalla de mantenimiento de marcas."],
     "Recetas": ["Se explica el uso de recetas."],
     "Artículos relacionados": ["Se explica el uso de artículos relacionados."],
     "Impresión de etiquetas": ["Se explica el proceso de impresión de etiquetas."],
     "Movimientos de inventario": ["Se explica de forma detallada el proceso de movimientos de inventario. (Entradas y Salidas)", "Transferencia entre bodegas."],
-    "Toma física": ["Se explica de forma detallada el proceso de toma física: revisión y correciones de inventarios.", "Buenas práctas en toma física."],
+    "Toma física": ["Se explica de forma detallada el proceso de toma física: revisión y correcciones de inventarios.", "Buenas prácticas en toma física."],
     "Existencias e Historial de Existencias": ["Se explica el uso de la pantalla de consultas de inventarios."],
 
     // Facturación - CxC
@@ -95,7 +95,7 @@
     // Ofertas - Promociones
     "Ofertas": ["Ofertas de tipo descuento.", "Ofertas de tipo bonificación.", "Creación de ofertas en bloque.", "Escalas de descuento en ofertas.", "Validación de inventario en ofertas.", "Notificación de inventario en ofertas."],
     "Promociones": ["Se explica el uso de promociones Qupos.", "Tipos de conteo.", "Impresión de cupones.", "Visualización de promociones en facturación."],
-    "Órdenes de compra": ["Configuración de mínimos y máximos en los artículos (Bodegas).", "Uso de órdenes de compra con mínimos y máximos.", "Uso de órdenes de compra de forma manual.", "Crear registro de compra a partir de una orden de compra.", "Análisis de la orden de compra.", "Notas de crédito desde ordenes de compra.", "Revisión de versus en orden de compra."],
+    "Órdenes de compra": ["Configuración de mínimos y máximos en los artículos (Bodegas).", "Uso de órdenes de compra con mínimos y máximos.", "Uso de órdenes de compra de forma manual.", "Crear registro de compra a partir de una orden de compra.", "Análisis de la orden de compra.", "Notas de crédito desde órdenes de compra.", "Revisión de versus en orden de compra."],
 
     // CxP
     "Movimientos de CxP": ["Se explica de forma detallada la pantalla de movimientos CxP.", "Notas de crédito financieras.", "División de pagos", "Notas de débito.", "Notificaciones de CxP."],
@@ -109,13 +109,13 @@
     "Liquidaciones en Dispositivo móvil (vendedor/repartidor)": ["Crear abonos a las cuentas por cobrar.", "Documento de pago en la liquidación."],
 
     // Handheld
-    "Inventarios": ["Imprimir etiquetas.", "Cambiar precios.", "Creación y aplicación de tomas físicas desde Hand Held.", "Creación y aplicación de ajustes de inventario desde Hand Held."],
-    "Compras": ["Creación de registro de compra desde Hand Held y finalización en PC.", "Creación y aplicación de notas de crédito compras desde Hand Held."],
+    "Inventarios": ["Imprimir etiquetas.", "Cambiar precios.", "Creación y aplicación de tomas físicas desde Handheld.", "Creación y aplicación de ajustes de inventario desde Handheld."],
+    "Compras": ["Creación de registro de compra desde Handheld y finalización en PC.", "Creación y aplicación de notas de crédito compras desde Handheld."],
 
     // Reportería
-    "Pantalla de consultas ventas": ["Ventas por facturas.", "Detalle de ventas.", "Resumen General.", "Artículos sin ventas.", "Utilidad.", "Cobertura de clientes.", "Cobertura de cliente por familia (recurso).", "Cobertura de cliente por familia (zona).", "Informe de recuperación.", "Reporte 80/20.", "Consulta Gerencial."],
-    "Pantalla de consultas compras": ["Compras por facturas.", "Detalle de compras."],
-    "Pantalla de consultas inventarios": ["Detalle movimiento de inventario.", "Existencias e Historial de existencias."],
+    "Pantalla de consultas de ventas": ["Ventas por facturas.", "Detalle de ventas.", "Resumen General.", "Artículos sin ventas.", "Utilidad.", "Cobertura de clientes.", "Cobertura de cliente por familia (recurso).", "Cobertura de cliente por familia (zona).", "Informe de recuperación.", "Reporte 80/20.", "Consulta Gerencial."],
+    "Pantalla de consultas de compras": ["Compras por facturas.", "Detalle de compras."],
+    "Pantalla de consultas de inventarios": ["Detalle movimiento de inventario.", "Existencias e Historial de existencias."],
     "Pantalla de D104 / Detalle D104": ["(Ventas, Compras)."],
     "Recepción de documentos electrónicos": ["Uso de consulta desde Qupos o Utilitario Cabys."],
     "Filtros, agrupar datos, tablas dinámicas": [],
@@ -275,12 +275,13 @@
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border-spacing:0; width:100%; background-color:#f5f7fb; margin:0; padding:0;">
     <tr>
       <td align="center" valign="top" style="padding:40px 0; text-align:center;">
-        <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
-        <tr>
-        <td align="center" valign="top" width="660">
-        <![endif]-->
-        <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin-left:auto; margin-right:auto; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
+        <div align="center" style="text-align:center; width:100%; margin:0 auto;">
+          <!--[if (gte mso 9)|(IE)]>
+          <table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
+          <tr>
+          <td align="center" valign="top" width="660">
+          <![endif]-->
+          <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin:0 auto; display:inline-table; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
           <tr>
             <td align="center" width="660" style="width:660px; background-color:${theme.darkColor}; padding:30px; text-align:center; border-bottom:4px solid ${theme.lightColor};">
               <img src="${resolveUrl(theme.logo)}" alt="Qupos" width="90" height="90" style="width:90px; height:90px; border:0; display:inline-block;">
@@ -329,6 +330,7 @@
         </tr>
         </table>
         <![endif]-->
+        </div>
       </td>
     </tr>
   </table>
@@ -677,7 +679,7 @@
     const version = val("quposVersion");
     const allTopics = Object.keys(CAPACITACION_TOPICS);
     if (version === "Lite") {
-      return ["Compras", "Inventarios - CxP", "Facturación - CxC", "Reporteria (Lite/Estandar)"];
+      return ["Compras", "Inventarios - CxP", "Facturación - CxC", "Reportería (Lite/Estándar)"];
     }
     return allTopics;
   }

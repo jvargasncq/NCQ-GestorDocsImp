@@ -125,12 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; border-spacing:0; width:100%; background-color:#f5f7fb; margin:0; padding:0;">
     <tr>
       <td align="center" valign="top" style="padding:40px 0; text-align:center;">
-        <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
-        <tr>
-        <td align="center" valign="top" width="660">
-        <![endif]-->
-        <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin-left:auto; margin-right:auto; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
+        <div align="center" style="text-align:center; width:100%; margin:0 auto;">
+          <!--[if (gte mso 9)|(IE)]>
+          <table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
+          <tr>
+          <td align="center" valign="top" width="660">
+          <![endif]-->
+          <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin:0 auto; display:inline-table; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
           <tr>
             <td align="center" width="660" style="width:660px; background-color:${theme.darkColor}; padding:30px; text-align:center; border-bottom:4px solid ${theme.lightColor};">
               <img src="${resolveUrl(theme.logo)}" alt="Qupos" width="90" height="90" style="width:90px; height:90px; border:0; display:inline-block;">
@@ -179,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </tr>
         </table>
         <![endif]-->
+        </div>
       </td>
     </tr>
   </table>
