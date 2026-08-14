@@ -876,7 +876,7 @@
   }
 
   document.querySelectorAll("input, select, textarea").forEach(el => {
-    if (el.id !== "isMultiTopic") {
+    if (el.id !== "isMultiTopic" && el.id !== "capacitacionTopic") {
       el.oninput = () => {
         render();
         saveState();
