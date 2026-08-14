@@ -218,7 +218,6 @@
   }
 
   function buildEmailShell(config, bodyHtml, greeting = "") {
-    // Falls back to Costa Rica (CR) configurations
     const countryData = CONFIG.countries.CR;
     const greetingHtml = greeting ? `<p style="margin: 0 0 12px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">${greeting}</p>` : "";
     const theme = getBrandTheme();
@@ -815,6 +814,31 @@
     }
   });
 
+  // Copy Subject action
+  const copySubjectBtn = $("btnCopySubject");
+  if (copySubjectBtn) {
+    copySubjectBtn.onclick = async () => {
+      const subjectText = $("subject").textContent.trim();
+      try {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(subjectText);
+          showCopySuccess(copySubjectBtn);
+        } else {
+          // Fallback
+          const el = document.createElement("textarea");
+          el.value = subjectText;
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand("copy");
+          document.body.removeChild(el);
+          showCopySuccess(copySubjectBtn);
+        }
+      } catch (err) {
+        console.error("Failed to copy subject", err);
+      }
+    };
+  }
+
   // Shared copy-to-clipboard helper
   async function copyHtmlToClipboard(htmlText, triggerBtn) {
     const tempDiv = document.createElement("div");
@@ -889,14 +913,29 @@
   }
 
   function showCopySuccess(btn) {
-    const originalText = btn.textContent;
-    btn.textContent = "¡Copiado! 📋";
-    btn.style.backgroundColor = "#4caf50";
-    btn.style.transition = "all 0.3s ease";
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.backgroundColor = "";
-    }, 2000);
+    const isIconBtn = btn.classList.contains("icon-btn");
+    const originalContent = btn.innerHTML;
+    
+    if (isIconBtn) {
+      btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#4caf50" stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      `;
+      btn.style.color = "#4caf50";
+      setTimeout(() => {
+        btn.innerHTML = originalContent;
+        btn.style.color = "";
+      }, 2000);
+    } else {
+      const originalText = btn.textContent;
+      btn.textContent = "¡Copiado! 📋";
+      btn.style.backgroundColor = "#4caf50";
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.backgroundColor = "";
+      }, 2000);
+    }
   }
 
   // === INIT ===
