@@ -450,12 +450,17 @@
         modulesByTopic[topic].push(label);
       });
 
+      const version = val("quposVersion");
+
       let topicText = "";
       if (isMulti) {
-        const selectedTopics = Array.from(document.querySelectorAll(".multi-topic-cb:checked")).map(cb => cb.dataset.topic);
+        const selectedTopics = Array.from(document.querySelectorAll(".multi-topic-cb:checked")).map(cb => {
+          const t = cb.dataset.topic;
+          return getTopicLabel(t);
+        });
         topicText = "Capacitación Multi-tema (" + selectedTopics.join(", ") + ")";
       } else {
-        topicText = "Capacitación de " + val("capacitacionTopic");
+        topicText = "Capacitación de " + getTopicLabel(val("capacitacionTopic"));
       }
 
       const startTime = `${val("startTimeHourCapacitacion")}:${val("startTimeMinCapacitacion")}`;
@@ -481,11 +486,15 @@
       let modulesHtml = "";
       Object.keys(modulesByTopic).forEach(topic => {
         if (isMulti) {
-          modulesHtml += `<p style="margin: 18px 0 6px 0; font-family: Arial, sans-serif; font-size: 15px; color: ${theme.darkColor}; border-bottom: 1px dashed ${theme.darkColor}; padding-bottom: 2px;"><strong>Tema: ${escapeHtml(topic)}</strong></p>`;
+          const label = getTopicLabel(topic);
+          modulesHtml += `<p style="margin: 18px 0 6px 0; font-family: Arial, sans-serif; font-size: 15px; color: ${theme.darkColor}; border-bottom: 1px dashed ${theme.darkColor}; padding-bottom: 2px;"><strong>Tema: ${escapeHtml(label)}</strong></p>`;
         }
         const topicModules = modulesByTopic[topic] || [];
         modulesHtml += topicModules.map(m => {
           let points = CAPACITACION_DETAILS[m] || [];
+          if (m === "Análisis" && version === "Lite") {
+            points = points.filter(p => p !== "Envío de la compra a CxP.");
+          }
           if (m === "Pantalla de consultas ventas" && topic !== "Reporteria (Rutas)") {
             points = points.filter(p => p !== "Cobertura de clientes." && p !== "Cobertura de cliente por familia (recurso)." && p !== "Cobertura de cliente por familia (zona).");
           }
@@ -647,6 +656,14 @@
     return html;
   }
 
+  function getTopicLabel(topic) {
+    const version = val("quposVersion");
+    if (version === "Lite" && topic === "Inventarios - CxP") {
+      return "Inventarios";
+    }
+    return topic;
+  }
+
   function getAllowedTopics() {
     const version = val("quposVersion");
     const allTopics = Object.keys(CAPACITACION_TOPICS);
@@ -663,7 +680,7 @@
     const currentVal = select.value;
     const allowed = getAllowedTopics();
     
-    select.innerHTML = allowed.map(topic => `<option value="${topic}">${topic}</option>`).join("");
+    select.innerHTML = allowed.map(topic => `<option value="${topic}">${getTopicLabel(topic)}</option>`).join("");
     
     if (allowed.includes(currentVal)) {
       select.value = currentVal;
@@ -686,7 +703,7 @@
           <input type="checkbox" class="multi-topic-cb" data-topic="${topic}">
           <span class="slider"></span>
         </label>
-        <span class="switch-text">${topic}</span>
+        <span class="switch-text">${getTopicLabel(topic)}</span>
       `;
       wrapper.querySelector("input").onchange = () => {
         updateCapacitacionUI();
@@ -720,15 +737,22 @@
       activeTopics = [val("capacitacionTopic")];
     }
 
+    const version = val("quposVersion");
+
     activeTopics.forEach(topic => {
       if (isMulti) {
         const header = document.createElement("div");
         header.style = "font-weight: 700; color: var(--qupos-dark); margin-top: 10px; margin-bottom: 6px; font-size: 13px; border-bottom: 1px dashed var(--border); padding-bottom: 2px;";
-        header.textContent = topic;
+        header.textContent = getTopicLabel(topic);
         container.appendChild(header);
       }
 
-      (CAPACITACION_TOPICS[topic] || []).forEach((item) => {
+      let items = CAPACITACION_TOPICS[topic] || [];
+      if (version === "Lite" && topic === "Inventarios - CxP") {
+        items = items.filter(item => item !== "Movimientos de CxP" && item !== "Trámites de pago");
+      }
+
+      items.forEach((item) => {
         const lbl = document.createElement("label");
         lbl.style = "display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; margin-left: " + (isMulti ? "12px" : "0") + ";";
         lbl.innerHTML = `<input type="checkbox" checked data-topic="${topic}" data-label="${item}"> ${item}`;
