@@ -1,85 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Guía: Enviar correos desde Gmail y guardarlos en Tickets de HubSpot</title>
+  <link rel="icon" href="https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      line-height: 1.6;
-      color: #333333;
-      background-color: #f8fafc;
-      margin: 0;
-      padding: 40px 20px;
-    }
-
+    /* Guide Custom Page Styling */
     .container {
-      max-width: 700px;
-      margin: 0 auto;
-      background: #ffffff;
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
       padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
     }
 
     h1 {
-      color: #0b1a30;
-      font-size: 24px;
+      margin-bottom: 24px;
       text-align: center;
-      margin-bottom: 30px;
-      border-bottom: 3px solid #ff6600;
-      padding-bottom: 12px;
-    }
-
-    .intro {
-      background-color: #f0f7ff;
-      border-left: 4px solid #0056b3;
-      padding: 16px;
-      border-radius: 0 8px 8px 0;
-      margin-bottom: 30px;
-      font-size: 15px;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+      padding-bottom: 16px;
     }
 
     .step {
-      margin-bottom: 35px;
+      margin-bottom: 30px;
       padding-bottom: 20px;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
     }
 
-    .step:last-child {
+    .step:last-of-type {
       border-bottom: none;
       margin-bottom: 0;
       padding-bottom: 0;
     }
 
     .step-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #0b1a30;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
       display: flex;
       align-items: center;
       margin-bottom: 12px;
     }
 
     .step-number {
-      background-color: #ff6600;
+      background-color: var(--qupos-dark);
       color: #ffffff;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-right: 10px;
+      margin-right: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(242, 114, 33, 0.2);
+    }
+
+    p {
       font-size: 14px;
+      color: #4a5568;
+      margin-bottom: 12px;
     }
 
     ul,
     ol {
-      padding-left: 20px;
+      padding-left: 24px;
       margin: 8px 0;
+      font-size: 14px;
+      color: #4a5568;
     }
 
     li {
@@ -87,50 +83,73 @@
     }
 
     .highlight {
-      background-color: #fff9f2;
-      border: 1px solid #ffe4cc;
-      padding: 12px;
-      border-radius: 6px;
-      margin: 10px 0;
-      font-size: 14px;
+      background-color: rgba(242, 114, 33, 0.05);
+      border: 1px solid rgba(242, 114, 33, 0.1);
+      padding: 16px;
+      border-radius: 12px;
+      margin: 16px 0;
+      font-size: 13.5px;
+      color: #333;
     }
 
     .note {
-      font-size: 13px;
-      color: #666666;
-      margin-top: 15px;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 24px;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      padding-top: 16px;
     }
 
     .back-button {
       display: inline-flex;
       align-items: center;
       text-decoration: none;
-      background-color: transparent;
-      color: #666666;
-      border: 1px solid #e2e8f0;
+      background-color: rgba(0, 0, 0, 0.04);
+      color: var(--text);
+      border: 1px solid rgba(0, 0, 0, 0.02);
       padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.2s ease-in-out;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
       margin-bottom: 20px;
       cursor: pointer;
     }
 
     .back-button:hover {
-      background-color: #f1f5f9;
-      color: #ff6600;
-      border-color: #ff6600;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      background-color: rgba(0, 0, 0, 0.08);
+      transform: translateY(-0.5px);
+    }
+
+    .back-button:active {
+      transform: translateY(0.5px);
     }
   </style>
 </head>
 
 <body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <img src="https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png" alt="Qupos" />
+        <div class="brand-copy">
+          <div class="t">Centro de trabajo Implantaciones</div>
+          <div class="s">Accesos internos</div>
+        </div>
+      </a>
+      <div class="topbar-main">
+        <div class="navlinks" aria-label="Navegación principal">
+          <a class="navlink" href="index.html">Minutas</a>
+          <a class="navlink active" href="guia_hubspot.html">Guía</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <a href="index.html" class="back-button">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor" stroke-width="2"
+        stroke="currentColor" stroke-width="2.5"
         style="margin-right: 8px; display: inline-block; vertical-align: middle;">
         <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
@@ -144,7 +163,7 @@
       </div>
       <p>Debes añadir la extensión oficial de HubSpot a tu navegador Google Chrome:</p>
       <ol>
-        <li>Entra en Google Chrome y busca: <strong>HubSpot Sales Chrome Extension.</strong>
+        <li>Entra en Google Chrome y busca: <strong>HubSpot Sales Chrome Extension.</strong></li>
         <li>Una vez instalada, haz clic en el icono de HubSpot que aparecerá en la parte superior derecha de tu
           navegador e <strong>inicia sesión con tu cuenta de HubSpot</strong>.</li>
       </ol>
