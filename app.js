@@ -342,7 +342,25 @@
         ncqPendings: val("ncqPendings")
       };
       const theme = getBrandTheme();
+      const checkQupos = $("checkInstalacionQupos") && $("checkInstalacionQupos").checked;
       const checkPinpads = $("checkInstalacionPinPads") && $("checkInstalacionPinPads").checked;
+      
+      let temaText = "Instalación y configuración";
+      if (checkPinpads && !checkQupos) {
+        temaText = "Instalación de PinPads";
+      } else if (!checkPinpads && checkQupos) {
+        temaText = "Instalación y configuración de Qupos";
+      } else if (checkPinpads && checkQupos) {
+        temaText = "Instalación de Qupos y PinPads";
+      }
+
+      const quposHtml = checkQupos ? `
+          <li style="margin-bottom: 6px;">Instalación de Qupos Server + Cliente</li>
+          <li style="margin-bottom: 6px;">Base de datos migrada desde: <strong>${escapeHtml(data.prevSystem)}</strong></li>
+          <li style="margin-bottom: 6px;">Versión 3.7.56 | Licencias: <strong>${data.licenseCount}</strong> (${data.quposVersion})</li>
+          <li style="margin-bottom: 6px;">Respaldos Cloud: <span style="color: #00a8ff;">${escapeHtml(data.backupEmail)}</span></li>
+      ` : "";
+
       const pinpadsHtml = checkPinpads ? `
           <li style="margin-bottom: 6px;">Se configuran <strong>${val("pinpadCount", "1")}</strong> PinPads en la versión de integración 3.11.3.7.</li>
           <li style="margin-bottom: 6px;">Se establecen <strong>${val("terminalCount", "1")}</strong> terminales BAC Contado.</li>
@@ -350,9 +368,10 @@
           <li style="margin-bottom: 6px;">Se explica cómo realizar cobros con la integración, pagos multitarjeta y pagos mixtos.</li>
           <li style="margin-bottom: 6px;">Se explica cómo realizar anulaciones de pagos y cierre PinPad.</li>
       ` : "";
+
       const body = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333; border-collapse: collapse;">
-          <tr><td style="padding: 4px 0;"><strong>Tema:</strong> Instalación y configuración</td></tr>
+          <tr><td style="padding: 4px 0;"><strong>Tema:</strong> ${temaText}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Fecha:</strong> ${data.installDate}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Razón comercial:</strong> ${escapeHtml(data.clientName)}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Cliente a cargo:</strong> ${escapeHtml(data.clientContact)}</td></tr>
@@ -360,11 +379,9 @@
         </table>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Trabajo realizado:</h3>
         <ul style="margin: 0 0 20px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">
-          <li style="margin-bottom: 6px;">Instalación de Qupos Server + Cliente</li>
-          <li style="margin-bottom: 6px;">Base de datos migrada desde: <strong>${escapeHtml(data.prevSystem)}</strong></li>
-          <li style="margin-bottom: 6px;">Versión 3.7.56 | Licencias: <strong>${data.licenseCount}</strong> (${data.quposVersion})</li>
-          <li style="margin-bottom: 6px;">Respaldos Cloud: <span style="color: #00a8ff;">${escapeHtml(data.backupEmail)}</span></li>
+          ${quposHtml}
           ${pinpadsHtml}
+          ${(!checkQupos && !checkPinpads) ? '<li style="margin-bottom: 6px;">Ningún componente seleccionado</li>' : ''}
         </ul>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0;">Pendientes cliente:</h3>
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
@@ -561,7 +578,20 @@
     const clientNameText = val("clientName").trim() || "Razón Comercial";
     let baseSubject = "";
     
-    if (activeTab === "capacitacion") {
+    if (activeTab === "instalacion") {
+      const checkQupos = $("checkInstalacionQupos") && $("checkInstalacionQupos").checked;
+      const checkPinpads = $("checkInstalacionPinPads") && $("checkInstalacionPinPads").checked;
+      
+      let subType = "Instalación";
+      if (checkPinpads && !checkQupos) {
+        subType = "Instalación de PinPads";
+      } else if (!checkPinpads && checkQupos) {
+        subType = "Instalación de Qupos";
+      } else if (checkPinpads && checkQupos) {
+        subType = "Instalación de Qupos y PinPads";
+      }
+      baseSubject = `Minuta Razón Comercial ${subType}`;
+    } else if (activeTab === "capacitacion") {
       const isMulti = $("isMultiTopic").checked;
       if (isMulti) {
         const selectedTopics = Array.from(document.querySelectorAll(".multi-topic-cb:checked")).map(cb => cb.dataset.topic);
@@ -765,10 +795,16 @@
         });
       }
 
+      const installQuposCheckbox = $("checkInstalacionQupos");
+      const quposDiv = $("divQuposFields");
+      if (installQuposCheckbox && quposDiv) {
+        quposDiv.classList.toggle("hidden", !installQuposCheckbox.checked);
+      }
+
       const installPinpadsCheckbox = $("checkInstalacionPinPads");
-      const extraDiv = $("divPinPadsExtra");
-      if (installPinpadsCheckbox && extraDiv) {
-        extraDiv.classList.toggle("hidden", !installPinpadsCheckbox.checked);
+      const pinpadsDiv = $("divPinPadsFields");
+      if (installPinpadsCheckbox && pinpadsDiv) {
+        pinpadsDiv.classList.toggle("hidden", !installPinpadsCheckbox.checked);
       }
 
       switchTab(activeTab);
@@ -788,13 +824,26 @@
     };
   }
 
+  const installQuposCheckbox = $("checkInstalacionQupos");
+  if (installQuposCheckbox) {
+    installQuposCheckbox.onchange = () => {
+      const active = installQuposCheckbox.checked;
+      const quposDiv = $("divQuposFields");
+      if (quposDiv) {
+        quposDiv.classList.toggle("hidden", !active);
+      }
+      render();
+      saveState();
+    };
+  }
+
   const installPinpadsCheckbox = $("checkInstalacionPinPads");
   if (installPinpadsCheckbox) {
     installPinpadsCheckbox.onchange = () => {
       const active = installPinpadsCheckbox.checked;
-      const extraDiv = $("divPinPadsExtra");
-      if (extraDiv) {
-        extraDiv.classList.toggle("hidden", !active);
+      const pinpadsDiv = $("divPinPadsFields");
+      if (pinpadsDiv) {
+        pinpadsDiv.classList.toggle("hidden", !active);
       }
       render();
       saveState();

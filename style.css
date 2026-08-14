@@ -172,6 +172,18 @@ body {
   gap: 20px;
 }
 
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 h1 {
   font-size: 20px;
   font-weight: 800;
@@ -234,7 +246,6 @@ label {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 6px;
 }
 
 input,
@@ -293,7 +304,6 @@ textarea {
   min-height: 34px;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 6px;
 }
 
 .checkbox-label {

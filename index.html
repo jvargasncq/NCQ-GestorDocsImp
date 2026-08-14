@@ -46,7 +46,7 @@
         <button class="tab" id="tabPuestaEnMarcha" type="button" data-tab="puestaEnMarcha">Puesta en Marcha</button>
       </div>
 
-      <div>
+      <div class="field-group">
         <label>Asunto</label>
         <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255, 255, 255, 0.4); padding: 10px 14px; min-height: 42px; backdrop-filter: blur(4px);">
           <div id="subject" style="font-weight: bold; font-size: 13px; color: var(--text); flex: 1;">
@@ -63,11 +63,11 @@
       <hr class="hr">
 
       <div class="row">
-        <div>
+        <div class="field-group">
           <label>Fecha</label>
           <input type="date" id="installDate">
         </div>
-        <div>
+        <div class="field-group">
           <label>Implantador NCQ</label>
           <select id="implanterNCQ">
             <!-- Carga dinámica desde JS -->
@@ -76,17 +76,17 @@
       </div>
 
       <div class="row">
-        <div>
+        <div class="field-group">
           <label>Razón comercial</label>
           <input id="clientName" placeholder="Razón Comercial">
         </div>
-        <div>
+        <div class="field-group">
           <label>Cliente a cargo</label>
           <input id="clientContact" placeholder="Nombre de la persona en la empresa">
         </div>
       </div>
 
-      <div>
+      <div class="field-group">
         <label>Licencia Qupos</label>
         <select id="quposVersion">
           <option value="Lite">Lite</option>
@@ -95,89 +95,112 @@
         </select>
       </div>
 
-      <div id="sectionInstalacion">
+      <div id="sectionInstalacion" class="form-section">
         <hr class="hr">
-        <div class="row">
-          <div>
-            <label>Sistema anterior (Migración)</label>
-            <input id="prevSystem" placeholder="Ej: Logosoft">
+
+        <div style="display: flex; gap: 16px; margin-bottom: 4px;">
+          <label class="checkbox-label" style="margin: 0;">
+            <input type="checkbox" id="checkInstalacionQupos" checked>
+            Instalación de Qupos
+          </label>
+          <label class="checkbox-label" style="margin: 0;">
+            <input type="checkbox" id="checkInstalacionPinPads">
+            Configuración de PinPads
+          </label>
+        </div>
+
+        <!-- Qupos Installation Fields -->
+        <div id="divQuposFields" class="form-section">
+          <div class="row">
+            <div class="field-group">
+              <label>Sistema anterior (Migración)</label>
+              <input id="prevSystem" placeholder="Ej: Logosoft">
+            </div>
+            <div class="field-group">
+              <label>Cantidad de Licencias</label>
+              <input type="number" id="licenseCount" value="1">
+            </div>
           </div>
-          <div>
-            <label>Cantidad de Licencias</label>
-            <input type="number" id="licenseCount" value="1">
+
+          <div class="field-group">
+            <label>Correo Respaldos (Cloud)</label>
+            <input id="backupEmail" placeholder="ejemplocorreo@gmail.com">
           </div>
         </div>
 
-        <label>Correo Respaldos (Cloud)</label>
-        <input id="backupEmail" placeholder="ejemplocorreo@gmail.com">
-
-        <label class="checkbox-label">
-          <input type="checkbox" id="checkInstalacionPinPads">
-          Configuración de PinPads
-        </label>
-
-        <div id="divPinPadsExtra" class="hidden">
+        <!-- PinPads Installation Fields -->
+        <div id="divPinPadsFields" class="hidden form-section">
           <div class="row">
-            <div>
+            <div class="field-group">
               <label>Cantidad de PinPads</label>
               <input type="number" id="pinpadCount" value="1" min="1">
             </div>
-            <div>
+            <div class="field-group">
               <label>Cantidad de Terminales</label>
               <input type="number" id="terminalCount" value="1" min="1">
             </div>
           </div>
         </div>
 
-        <label>Pendientes Cliente</label>
-        <textarea id="clientPendings" placeholder="Lista de tareas del cliente..."></textarea>
+        <div class="field-group">
+          <label>Pendientes Cliente</label>
+          <textarea id="clientPendings" placeholder="Lista de tareas del cliente..."></textarea>
+        </div>
 
-        <label>Pendientes NCQ</label>
-        <textarea id="ncqPendings" placeholder="Lista de tareas nuestras..."></textarea>
+        <div class="field-group">
+          <label>Pendientes NCQ</label>
+          <textarea id="ncqPendings" placeholder="Lista de tareas nuestras..."></textarea>
+        </div>
       </div>
 
-      <div id="sectionMigracion" class="hidden">
+      <div id="sectionMigracion" class="hidden form-section">
         <hr class="hr">
-        <label>Sistema anterior (Migración)</label>
-        <input id="prevSystemMigracion" placeholder="Ej: Logosoft">
+        <div class="field-group">
+          <label>Sistema anterior (Migración)</label>
+          <input id="prevSystemMigracion" placeholder="Ej: Logosoft">
+        </div>
 
-        <label>Incluir en Trabajo Realizado:</label>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
-          <label class="checkbox-label">
-            <input type="checkbox" id="checkMigracionArticulos">
-            Artículos
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="checkMigracionClientes">
-            Clientes
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="checkMigracionProveedores">
-            Proveedores
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="checkMigracionCuentasPorCobrar">
-            Cuentas por cobrar
-          </label>
-          <div id="divDateCxC" class="hidden" style="margin-left: 24px;">
-            <label>Fecha corte Cuentas por cobrar</label>
-            <input type="date" id="dateMigracionCxC">
-          </div>
-          <label class="checkbox-label">
-            <input type="checkbox" id="checkMigracionCuentasPorPagar">
-            Cuentas por pagar
-          </label>
-          <div id="divDateCxP" class="hidden" style="margin-left: 24px;">
-            <label>Fecha corte Cuentas por pagar</label>
-            <input type="date" id="dateMigracionCxP">
+        <div class="field-group">
+          <label>Incluir en Trabajo Realizado:</label>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+            <label class="checkbox-label">
+              <input type="checkbox" id="checkMigracionArticulos">
+              Artículos
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="checkMigracionClientes">
+              Clientes
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="checkMigracionProveedores">
+              Proveedores
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="checkMigracionCuentasPorCobrar">
+              Cuentas por cobrar
+            </label>
+            <div id="divDateCxC" class="hidden field-group" style="margin-left: 24px;">
+              <label>Fecha corte Cuentas por cobrar</label>
+              <input type="date" id="dateMigracionCxC">
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="checkMigracionCuentasPorPagar">
+              Cuentas por pagar
+            </label>
+            <div id="divDateCxP" class="hidden field-group" style="margin-left: 24px;">
+              <label>Fecha corte Cuentas por pagar</label>
+              <input type="date" id="dateMigracionCxP">
+            </div>
           </div>
         </div>
 
-        <label>Pendientes NCQ</label>
-        <textarea id="ncqPendingsMigracion" placeholder="Detalle de correcciones de datos..."></textarea>
+        <div class="field-group">
+          <label>Pendientes NCQ</label>
+          <textarea id="ncqPendingsMigracion" placeholder="Detalle de correcciones de datos..."></textarea>
+        </div>
       </div>
 
-      <div id="sectionCapacitacion" class="hidden">
+      <div id="sectionCapacitacion" class="hidden form-section">
         <hr class="hr">
 
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
@@ -187,7 +210,7 @@
           </label>
         </div>
 
-        <div id="singleTopicContainer">
+        <div id="singleTopicContainer" class="field-group">
           <select id="capacitacionTopic">
             <option value="Compras">Compras</option>
             <option value="Inventarios - CxP">Inventarios - CxP</option>
@@ -210,7 +233,7 @@
         </div>
 
         <div class="row">
-          <div>
+          <div class="field-group">
             <label>Hora de Inicio</label>
             <div style="display: flex; gap: 6px;">
               <select id="startTimeHourCapacitacion" style="width: 50%;">
@@ -247,7 +270,7 @@
               </select>
             </div>
           </div>
-          <div>
+          <div class="field-group">
             <label>Hora de Finalización</label>
             <div style="display: flex; gap: 6px;">
               <select id="endTimeHourCapacitacion" style="width: 50%;">
@@ -286,39 +309,55 @@
           </div>
         </div>
 
-        <label>Asistentes (uno por línea)</label>
-        <textarea id="clientContactCapacitacion" placeholder="Nombre de los asistentes..."
-          style="min-height: 100px;"></textarea>
-
-        <hr class="hr">
-
-        <label>Contenidos cubiertos:</label>
-        <div id="capacitacionCheckboxes"
-          style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
-          <!-- Se genera dinámicamente -->
+        <div class="field-group">
+          <label>Asistentes (uno por línea)</label>
+          <textarea id="clientContactCapacitacion" placeholder="Nombre de los asistentes..."
+            style="min-height: 100px;"></textarea>
         </div>
 
-        <label>Pendientes Cliente</label>
-        <textarea id="clientPendingsCapacitacion" placeholder="Lista de tareas del cliente..."></textarea>
+        <hr class="hr">
 
-        <label>Pendientes NCQ</label>
-        <textarea id="ncqPendingsCapacitacion"
-          placeholder="Notas sobre el aprendizaje o dudas del cliente..."></textarea>
+        <div class="field-group">
+          <label>Contenidos cubiertos:</label>
+          <div id="capacitacionCheckboxes"
+            style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            <!-- Se genera dinámicamente -->
+          </div>
+        </div>
 
-        <label>Link de la capacitación</label>
-        <input id="capacitacionLink" placeholder="https://...">
+        <div class="field-group">
+          <label>Pendientes Cliente</label>
+          <textarea id="clientPendingsCapacitacion" placeholder="Lista de tareas del cliente..."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label>Pendientes NCQ</label>
+          <textarea id="ncqPendingsCapacitacion"
+            placeholder="Notas sobre el aprendizaje o dudas del cliente..."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label>Link de la capacitación</label>
+          <input id="capacitacionLink" placeholder="https://...">
+        </div>
       </div>
 
-      <div id="sectionPuestaEnMarcha" class="hidden">
+      <div id="sectionPuestaEnMarcha" class="hidden form-section">
         <hr class="hr">
-        <label>Trabajo Realizado</label>
-        <textarea id="workDonePuestaEnMarcha" placeholder="Describa el trabajo realizado..."></textarea>
+        <div class="field-group">
+          <label>Trabajo Realizado</label>
+          <textarea id="workDonePuestaEnMarcha" placeholder="Describa el trabajo realizado..."></textarea>
+        </div>
 
-        <label>Pendientes Cliente</label>
-        <textarea id="clientPendingsPuestaEnMarcha" placeholder="Lista de tareas del cliente..."></textarea>
+        <div class="field-group">
+          <label>Pendientes Cliente</label>
+          <textarea id="clientPendingsPuestaEnMarcha" placeholder="Lista de tareas del cliente..."></textarea>
+        </div>
 
-        <label>Pendientes NCQ</label>
-        <textarea id="ncqPendingsPuestaEnMarcha" placeholder="Lista de tareas nuestras..."></textarea>
+        <div class="field-group">
+          <label>Pendientes NCQ</label>
+          <textarea id="ncqPendingsPuestaEnMarcha" placeholder="Lista de tareas nuestras..."></textarea>
+        </div>
       </div>
 
       <div class="btns">
