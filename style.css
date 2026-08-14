@@ -289,10 +289,17 @@ textarea {
   gap: 12px;
 }
 
+.row label {
+  min-height: 32px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 6px;
+}
+
 /* Icon Buttons & Copy actions */
 .icon-btn {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--glass-border);
+  background: rgba(242, 114, 33, 0.08);
+  border: 1px solid rgba(242, 114, 33, 0.2);
   border-radius: 8px;
   width: 28px;
   height: 28px;
@@ -300,15 +307,15 @@ textarea {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--muted);
+  color: var(--qupos-dark);
   transition: all 0.2s ease;
 }
 
 .icon-btn:hover {
-  background: #ffffff;
+  background: var(--qupos-dark);
   border-color: var(--qupos-dark);
-  color: var(--qupos-dark);
-  box-shadow: 0 2px 6px rgba(242, 114, 33, 0.1);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(242, 114, 33, 0.2);
   transform: translateY(-1px);
 }
 
