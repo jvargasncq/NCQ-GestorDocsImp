@@ -627,14 +627,20 @@
     if (!grid) return;
     grid.innerHTML = "";
     Object.keys(CAPACITACION_TOPICS).forEach(topic => {
-      const lbl = document.createElement("label");
-      lbl.style = "display: flex; align-items: center; gap: 8px; margin: 0; cursor: pointer; color: var(--text); font-size: 14px;";
-      lbl.innerHTML = `<input type="checkbox" class="multi-topic-cb" data-topic="${topic}"> ${topic}`;
-      lbl.querySelector("input").onchange = () => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "switch-container";
+      wrapper.innerHTML = `
+        <label class="switch">
+          <input type="checkbox" class="multi-topic-cb" data-topic="${topic}">
+          <span class="slider"></span>
+        </label>
+        <span class="switch-text">${topic}</span>
+      `;
+      wrapper.querySelector("input").onchange = () => {
         updateCapacitacionUI();
         saveState();
       };
-      grid.appendChild(lbl);
+      grid.appendChild(wrapper);
     });
   }
 
@@ -1002,6 +1008,19 @@
   populateImplanters();
   initializeDates();
   initMultiTopicUI();
+
+  // Set default visibility of Qupos/PinPads containers before loading cache
+  const quposDiv = $("divQuposFields");
+  const quposCb = $("checkInstalacionQupos");
+  if (quposDiv && quposCb) {
+    quposDiv.classList.toggle("hidden", !quposCb.checked);
+  }
+  const pinpadsDiv = $("divPinPadsFields");
+  const pinpadsCb = $("checkInstalacionPinPads");
+  if (pinpadsDiv && pinpadsCb) {
+    pinpadsDiv.classList.toggle("hidden", !pinpadsCb.checked);
+  }
+
   loadState();
   render();
 })();

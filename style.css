@@ -1,19 +1,16 @@
-/* Glassmorphism/Liquid Glass CSS Stylesheet */
+/* Tactile Skeuomorphic Stylesheet */
 
 :root {
   --qupos-dark: #F27221;
   --qupos-orange: #F8A227;
-  --qupos-orange-light: rgba(248, 162, 39, 0.15);
   
-  /* Liquid Glass Palette */
-  --bg: #f3f5f8;
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --glass-border-hover: rgba(242, 114, 33, 0.3);
+  /* Tactile Slate Palette */
+  --bg: #d4d9e2;
+  --panel-bg: #eceff4;
   --text: #2d3748;
-  --muted: #718096;
-  --border: rgba(226, 232, 240, 0.8);
-  --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04), 0 4px 12px 0 rgba(0, 0, 0, 0.02);
+  --muted: #5a6578;
+  --border: #b8c1cc;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
 @view-transition {
@@ -28,40 +25,40 @@
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  background: radial-gradient(circle at top right, rgba(248, 162, 39, 0.06), transparent 500px),
-              radial-gradient(circle at bottom left, rgba(242, 114, 33, 0.04), transparent 600px),
-              var(--bg);
+  background: radial-gradient(circle at top right, rgba(248, 162, 39, 0.05), transparent 600px),
+              linear-gradient(135deg, #cbd2dc 0%, #e8ecf2 100%);
   background-attachment: fixed;
   color: var(--text);
   min-height: 100vh;
   line-height: 1.5;
 }
 
-/* Glass Header */
+/* Extruded Bevel Topbar */
 .topbar {
   position: sticky;
   top: 0;
   z-index: 20;
   padding: 12px 0;
-  background: rgba(243, 245, 248, 0.8);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  background: linear-gradient(to bottom, #eceff4, #d5dae2);
+  border-bottom: 1px solid #b3bcc7;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
 .topbar-inner {
   width: min(1600px, calc(100% - 32px));
   margin: auto;
-  padding: 12px 24px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: wrap;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
+  background: #f0f3f6;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-right: 1px solid #b8c1cc;
+  border-bottom: 1px solid #b8c1cc;
+  border-radius: 12px;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.05), inset 1px 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .brand {
@@ -74,11 +71,11 @@ body {
 
 .brand img {
   height: 32px;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .brand:hover img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 .brand-copy {
@@ -92,6 +89,7 @@ body {
   color: var(--qupos-dark);
   line-height: 1.2;
   letter-spacing: .02em;
+  text-shadow: 1px 1px 0 #ffffff;
 }
 
 .brand-copy .s {
@@ -120,27 +118,32 @@ body {
   font-size: 12px;
   font-weight: 800;
   color: var(--text);
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.4);
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-right: 1px solid #b8c1cc;
+  border-bottom: 1px solid #b8c1cc;
+  background: linear-gradient(to bottom, #fafafa, #eaeaea);
   border-radius: 99px;
   padding: 6px 14px;
   line-height: 1.1;
   display: inline-flex;
   align-items: center;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.05), inset 0 1px 0 #ffffff;
   transition: all 0.2s ease;
 }
 
 .navlink:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
   border-color: var(--qupos-orange);
   color: var(--qupos-dark);
 }
 
 .navlink.active {
-  background: var(--qupos-dark);
-  border-color: var(--qupos-dark);
+  background: linear-gradient(to bottom, #f27221, #d45913);
+  border-color: #c04e11;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(242, 114, 33, 0.3);
+  box-shadow: inset 1px 1.5px 3px rgba(0,0,0,0.2);
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
 }
 
 /* Page Wrapper */
@@ -159,14 +162,16 @@ body {
   }
 }
 
-/* Glass Panels */
+/* Bevel Tactile Panels */
 .panel {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
+  background: #edf1f6;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-right: 1px solid #a8b2bd;
+  border-bottom: 1px solid #a8b2bd;
+  border-radius: 16px;
   padding: 28px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(20px);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.06), -5px -5px 15px rgba(255, 255, 255, 0.7);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -189,6 +194,7 @@ h1 {
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.01em;
+  text-shadow: 1px 1px 0 #ffffff;
 }
 
 h2 {
@@ -196,30 +202,33 @@ h2 {
   font-weight: 700;
   color: var(--qupos-dark);
   margin-top: 8px;
+  text-shadow: 1px 1px 0 #ffffff;
 }
 
-/* Glassmorphic Tabs */
+/* Skeuomorphic Beveled Tabs */
 .tabs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
-  background: rgba(0, 0, 0, 0.03);
+  background: #d6dde6;
   padding: 5px;
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.08), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+  border: 1px solid #cbd5e1;
 }
 
 .tab {
-  border: 0;
-  background: transparent;
+  border: 1px solid transparent;
+  background: linear-gradient(to bottom, #f8fafc, #edf2f7);
   color: #4a5568;
   padding: 8px 4px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
   font-size: 12px;
   text-align: center;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -227,18 +236,18 @@ h2 {
 }
 
 .tab:hover {
+  background: linear-gradient(to bottom, #ffffff, #edf2f7);
   color: var(--qupos-dark);
-  background: rgba(255, 255, 255, 0.4);
 }
 
 .tab.active {
-  background: #ffffff;
+  background: #cbd2dc;
   color: var(--qupos-dark);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-  border: 1px solid var(--glass-border);
+  box-shadow: inset 1px 1.5px 3px rgba(0, 0, 0, 0.12);
+  border: 1px solid #b8c1cc;
 }
 
-/* Glass Inputs & Form Elements */
+/* Inputs & Form Elements */
 label {
   display: block;
   font-size: 12px;
@@ -252,41 +261,34 @@ input,
 select,
 textarea {
   width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border-top: 1px solid #a1aab2;
+  border-left: 1px solid #a1aab2;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 8px;
   padding: 10px 14px;
   font-size: 14px;
   font-weight: 600;
   outline: none;
-  background: rgba(255, 255, 255, 0.5);
+  background: #ffffff;
   color: var(--text);
   font-family: inherit;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(4px);
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
 }
 
 input:hover,
 select:hover,
 textarea:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(242, 114, 33, 0.3);
+  border-top-color: #7f8a93;
+  border-left-color: #7f8a93;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  background: #ffffff;
   border-color: var(--qupos-dark);
-  box-shadow: 0 0 0 3px rgba(242, 114, 33, 0.15);
-}
-
-input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  border-radius: 4px;
-  accent-color: var(--qupos-dark);
-  cursor: pointer;
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05), 0 0 0 3px rgba(242, 114, 33, 0.2);
 }
 
 textarea {
@@ -306,23 +308,117 @@ textarea {
   align-items: flex-end;
 }
 
-.checkbox-label {
-  display: flex;
+/* Skeuomorphic Switch Styles */
+.switch-container {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  color: var(--text);
+  user-select: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 24px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.5);
+  border: 1px solid #b8c1cc;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%);
+  transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid #a1aab2;
+}
+
+/* Checked slider color */
+input:checked + .slider {
+  background-color: #ffd8b8;
+  border-color: #f27221;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+  background: radial-gradient(circle at 30% 30%, #ffdfbf 0%, #f27221 60%, #d45913 100%);
+  border-color: #d45913;
+}
+
+.switch-text {
   font-size: 13px;
-  text-transform: none;
-  font-weight: 600;
-  margin: 8px 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Custom Bevel Checkbox (For list items in Capacitacion/Migracion details) */
+input[type="checkbox"]:not(.switch input) {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background-color: #f1f3f6;
+  border-top: 1px solid #a1aab2;
+  border-left: 1px solid #a1aab2;
+  border-right: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+input[type="checkbox"]:not(.switch input):checked {
+  background-color: var(--qupos-dark);
+  border-color: #d45913;
+  border-right-color: #f27221;
+  border-bottom-color: #f27221;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+input[type="checkbox"]:not(.switch input):checked::after {
+  content: "✓";
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 1;
 }
 
 /* Icon Buttons & Copy actions */
 .icon-btn {
-  background: rgba(242, 114, 33, 0.08);
-  border: 1px solid rgba(242, 114, 33, 0.2);
-  border-radius: 8px;
+  background: linear-gradient(to bottom, #ffffff, #edf2f7);
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
   width: 28px;
   height: 28px;
   display: flex;
@@ -330,19 +426,20 @@ textarea {
   justify-content: center;
   cursor: pointer;
   color: var(--qupos-dark);
-  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06), inset 0 1px 0 #ffffff;
+  transition: all 0.15s ease;
 }
 
 .icon-btn:hover {
-  background: var(--qupos-dark);
+  background: linear-gradient(to bottom, #ffffff, #e2e8f0);
   border-color: var(--qupos-dark);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(242, 114, 33, 0.2);
-  transform: translateY(-1px);
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), inset 0 1px 0 #ffffff;
 }
 
 .icon-btn:active {
-  transform: translateY(0);
+  transform: translateY(1px);
+  box-shadow: inset 0 1.5px 3px rgba(0,0,0,0.1);
 }
 
 /* Bottom Buttons Group */
@@ -352,14 +449,14 @@ textarea {
   margin-top: 8px;
 }
 
-button {
-  border: 0;
-  border-radius: 12px;
+button:not(.tab):not(.icon-btn):not(.switch-container *) {
+  border: 1px solid #c04e11;
+  border-radius: 8px;
   padding: 12px 18px;
   cursor: pointer;
   font-weight: 700;
   font-size: 13px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -367,38 +464,53 @@ button {
 }
 
 .primary {
-  background: var(--qupos-dark);
+  background: linear-gradient(to bottom, #ff9b57, #f27221);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(242, 114, 33, 0.2);
+  border-color: #c04e11;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .primary:hover {
-  background: #e05a10;
-  transform: translateY(-1.5px);
-  box-shadow: 0 6px 16px rgba(242, 114, 33, 0.3);
+  background: linear-gradient(to bottom, #ffa76b, #f27221);
+  transform: translateY(-0.5px);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.18), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
+}
+
+.primary:active {
+  transform: translateY(1.5px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0,0,0,0.1);
 }
 
 .pdf-btn {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: linear-gradient(to bottom, #fee2e2, #fca5a5);
+  color: #991b1b;
+  border: 1px solid #ef4444;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
 }
 
 .pdf-btn:hover {
-  background: #ef4444;
-  color: #fff;
-  transform: translateY(-1.5px);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.25);
+  background: linear-gradient(to bottom, #fef2f2, #fca5a5);
+  transform: translateY(-0.5px);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.12), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
+}
+
+.pdf-btn:active {
+  transform: translateY(1.5px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0,0,0,0.1);
 }
 
 /* Preview Area styling */
 .preview {
   width: 100%;
   min-height: 960px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 16px;
+  border-top: 1px solid #a8b2bd;
+  border-left: 1px solid #a8b2bd;
+  border-right: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
+  border-radius: 12px;
   background: #ffffff;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.01);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .hidden {

@@ -98,15 +98,21 @@
       <div id="sectionInstalacion" class="form-section">
         <hr class="hr">
 
-        <div style="display: flex; gap: 16px; margin-bottom: 4px;">
-          <label class="checkbox-label" style="margin: 0;">
-            <input type="checkbox" id="checkInstalacionQupos" checked>
-            Instalación de Qupos
-          </label>
-          <label class="checkbox-label" style="margin: 0;">
-            <input type="checkbox" id="checkInstalacionPinPads">
-            Configuración de PinPads
-          </label>
+        <div style="display: flex; gap: 20px; align-items: center;">
+          <div class="switch-container">
+            <label class="switch">
+              <input type="checkbox" id="checkInstalacionQupos" checked>
+              <span class="slider"></span>
+            </label>
+            <span class="switch-text">Qupos</span>
+          </div>
+          <div class="switch-container">
+            <label class="switch">
+              <input type="checkbox" id="checkInstalacionPinPads">
+              <span class="slider"></span>
+            </label>
+            <span class="switch-text">PinPads</span>
+          </div>
         </div>
 
         <!-- Qupos Installation Fields -->
@@ -162,32 +168,47 @@
 
         <div class="field-group">
           <label>Incluir en Trabajo Realizado:</label>
-          <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
-            <label class="checkbox-label">
-              <input type="checkbox" id="checkMigracionArticulos">
-              Artículos
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" id="checkMigracionClientes">
-              Clientes
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" id="checkMigracionProveedores">
-              Proveedores
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" id="checkMigracionCuentasPorCobrar">
-              Cuentas por cobrar
-            </label>
-            <div id="divDateCxC" class="hidden field-group" style="margin-left: 24px;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkMigracionArticulos">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Artículos</span>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkMigracionClientes">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Clientes</span>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkMigracionProveedores">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Proveedores</span>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkMigracionCuentasPorCobrar">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Cuentas por cobrar</span>
+            </div>
+            <div id="divDateCxC" class="hidden field-group" style="margin-left: 56px;">
               <label>Fecha corte Cuentas por cobrar</label>
               <input type="date" id="dateMigracionCxC">
             </div>
-            <label class="checkbox-label">
-              <input type="checkbox" id="checkMigracionCuentasPorPagar">
-              Cuentas por pagar
-            </label>
-            <div id="divDateCxP" class="hidden field-group" style="margin-left: 24px;">
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkMigracionCuentasPorPagar">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Cuentas por pagar</span>
+            </div>
+            <div id="divDateCxP" class="hidden field-group" style="margin-left: 56px;">
               <label>Fecha corte Cuentas por pagar</label>
               <input type="date" id="dateMigracionCxP">
             </div>
@@ -205,9 +226,13 @@
 
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
           <label style="margin: 0; font-weight: bold; color: var(--text); text-transform: none;">Tema de Capacitación</label>
-          <label class="checkbox-label" style="margin: 0; color: var(--qupos-dark);">
-            <input type="checkbox" id="isMultiTopic"> Multi-tema
-          </label>
+          <div class="switch-container">
+            <label class="switch">
+              <input type="checkbox" id="isMultiTopic">
+              <span class="slider"></span>
+            </label>
+            <span class="switch-text" style="color: var(--qupos-dark);">Multi-tema</span>
+          </div>
         </div>
 
         <div id="singleTopicContainer" class="field-group">
