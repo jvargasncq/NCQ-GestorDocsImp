@@ -91,30 +91,11 @@
       <!-- ONBOARDING SECTION -->
       <div id="sectionOnboarding" class="form-section">
         <hr class="hr">
-        <div class="row">
-          <div class="field-group">
-            <label>Sistema anterior</label>
-            <input id="prevSystem" placeholder="Ej: Logosoft">
-          </div>
-          <div class="field-group">
-            <label>Cantidad de Licencias</label>
-            <input type="number" id="licenseCount" value="1">
-          </div>
-        </div>
-
         <div class="field-group">
-          <label>Correo Respaldos (Cloud)</label>
-          <input id="backupEmail" placeholder="ejemplocorreo@gmail.com">
-        </div>
-
-        <div class="field-group">
-          <label>Pendientes Cliente</label>
-          <textarea id="clientPendings" placeholder="Lista de tareas del cliente..."></textarea>
-        </div>
-
-        <div class="field-group">
-          <label>Pendientes NCQ</label>
-          <textarea id="ncqPendings" placeholder="Lista de tareas nuestras..."></textarea>
+          <label>Plantilla de Correo Onboarding</label>
+          <select id="onboardingTemplate">
+            <!-- Carga dinámica desde JS -->
+          </select>
         </div>
       </div>
 
