@@ -487,3 +487,12 @@ button:not(.tab):not(.icon-btn):not(.switch-container *) {
   border-top: 1px dashed rgba(0, 0, 0, 0.08);
   margin: 8px 0;
 }
+
+.btn-delete-row {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-delete-row:hover {
+  transform: scale(1.2) !important;
+  color: #d32f2f !important;
+}

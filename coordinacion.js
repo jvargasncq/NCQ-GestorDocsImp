@@ -436,42 +436,171 @@ Saludos cordiales,`
       return buildEmailShell(CONFIG, emailContent);
     },
     planDeTrabajo: () => {
-      const data = {
-        installDate: formatDate(val("installDate")),
-        implanterNCQ: val("implanterNCQ"),
-        clientName: val("clientName"),
-        clientContact: val("clientContact"),
-        quposVersion: val("quposVersion"),
-        planTrabajoDetalle: val("planTrabajoDetalle"),
-        clientPendingsPlan: val("clientPendingsPlan"),
-        ncqPendingsPlan: val("ncqPendingsPlan")
-      };
       const theme = getBrandTheme();
-      const body = `
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333; border-collapse: collapse;">
-          <tr><td style="padding: 4px 0;"><strong>Tema:</strong> Plan de Trabajo</td></tr>
-          <tr><td style="padding: 4px 0;"><strong>Fecha:</strong> ${data.installDate}</td></tr>
-          <tr><td style="padding: 4px 0;"><strong>Razón comercial:</strong> ${escapeHtml(data.clientName)}</td></tr>
-          <tr><td style="padding: 4px 0;"><strong>Cliente a cargo:</strong> ${escapeHtml(data.clientContact)}</td></tr>
-          <tr><td style="padding: 4px 0;"><strong>Versión Qupos:</strong> ${data.quposVersion}</td></tr>
-          <tr><td style="padding: 4px 0;"><strong>Implantador NCQ:</strong> ${data.implanterNCQ}</td></tr>
-        </table>
-        
-        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Detalle del Plan de Trabajo:</h3>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
-          <tr><td style="padding: 12px 14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">${formatList(data.planTrabajoDetalle)}</td></tr>
-        </table>
-        
-        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Pendientes cliente:</h3>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
-          <tr><td style="padding: 12px 14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">${formatList(data.clientPendingsPlan)}</td></tr>
-        </table>
-        
-        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Pendientes NCQ:</h3>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 10px 0;">
-          <tr><td style="padding: 12px 14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333333;">${formatList(data.ncqPendingsPlan)}</td></tr>
-        </table>`;
-      return buildEmailShell(CONFIG, body);
+      const clientName = val("clientName").trim() || "Cliente";
+      const clientContact = val("clientContact").trim() || "Contacto";
+      const installDate = formatDate(val("installDate"));
+      const implanter = val("implanterNCQ") || "Por definir";
+      const version = val("quposVersion") || "Standard";
+
+      const sessionCards = document.querySelectorAll(".session-row-card");
+      const sessions = Array.from(sessionCards).map(card => ({
+        date: card.querySelector(".session-date").value,
+        time: card.querySelector(".session-time").value,
+        duration: card.querySelector(".session-duration").value,
+        modality: card.querySelector(".session-modality").value,
+        module: card.querySelector(".session-module").value,
+        topic: card.querySelector(".session-topic").value
+      }));
+
+      return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Plan de Trabajo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      color: #333333;
+      background-color: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .header-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .header-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: ${theme.primaryColor};
+    }
+    .header-doc {
+      font-size: 16px;
+      font-weight: bold;
+      color: #666666;
+      text-align: right;
+    }
+    .line-separator {
+      height: 3px;
+      background-color: ${theme.primaryColor};
+      margin: 8px 0 20px 0;
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .info-table td {
+      padding: 4px 0;
+      vertical-align: top;
+    }
+    .content-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: left;
+    }
+    .content-table th {
+      background-color: ${theme.primaryColor};
+      color: #ffffff;
+      font-weight: bold;
+      padding: 10px 8px;
+      border: 1px solid ${theme.primaryColor};
+    }
+    .content-table td {
+      padding: 10px 8px;
+      border: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    .row-even {
+      background-color: #ffffff;
+    }
+    .row-odd {
+      background-color: #f9f9f9;
+    }
+    .footer-note {
+      margin-top: 30px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #777777;
+      text-align: center;
+      font-style: italic;
+    }
+    @media print {
+      body {
+        padding: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table class="header-table">
+    <tr>
+      <td class="header-title">NCQ Technologies</td>
+      <td class="header-doc">PROPUESTA PLAN DE TRABAJO</td>
+    </tr>
+  </table>
+  <div class="line-separator"></div>
+  
+  <table class="info-table">
+    <tr>
+      <td width="55%"><strong>Cliente / Razón comercial:</strong> ${escapeHtml(clientName)}</td>
+      <td width="45%"><strong>Fecha de emisión:</strong> ${installDate || "Por definir"}</td>
+    </tr>
+    <tr>
+      <td><strong>Cliente a cargo:</strong> ${escapeHtml(clientContact)}</td>
+      <td><strong>Implantador NCQ:</strong> ${escapeHtml(implanter)}</td>
+    </tr>
+    <tr>
+      <td><strong>Licencia / Versión Qupos:</strong> ${escapeHtml(version)}</td>
+      <td><strong>Estado:</strong> Borrador de Trabajo</td>
+    </tr>
+  </table>
+
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th width="12%">Fecha</th>
+        <th width="18%">Hora</th>
+        <th width="15%">Módulo</th>
+        <th width="35%">Tema de Capacitación</th>
+        <th width="10%">Duración</th>
+        <th width="10%">Modalidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${sessions.length === 0 ? `
+        <tr>
+          <td colspan="6" style="text-align:center; padding: 20px; color:#999999;">No hay sesiones agregadas al plan de trabajo. Haga clic en "Cargar Plantilla" o "+ Agregar Fila" en el panel izquierdo.</td>
+        </tr>
+      ` : sessions.map((s, idx) => `
+        <tr class="${idx % 2 === 0 ? 'row-even' : 'row-odd'}">
+          <td>${escapeHtml(s.date)}</td>
+          <td>${escapeHtml(s.time)}</td>
+          <td><strong>${escapeHtml(s.module)}</strong></td>
+          <td style="white-space: pre-line;">${escapeHtml(s.topic)}</td>
+          <td style="text-align:center;">${escapeHtml(s.duration)}</td>
+          <td style="text-align:center;">${escapeHtml(s.modality)}</td>
+        </tr>
+      `).join("")}
+    </tbody>
+  </table>
+  
+  <p class="footer-note">
+    * Este plan de trabajo constituye una propuesta inicial de agenda. Las fechas y horas de las sesiones quedan sujetas a confirmación previa con el cliente.
+  </p>
+</body>
+</html>`;
     }
   };
 
@@ -511,6 +640,12 @@ Saludos cordiales,`
     activeTab = tabId;
     document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tabId));
     document.querySelectorAll(".form-section").forEach(s => s.classList.toggle("hidden", s.id !== `section${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`));
+    
+    const copyBtn = $("btnCopy");
+    if (copyBtn) {
+      copyBtn.textContent = tabId === "planDeTrabajo" ? "Copiar Tabla" : "Copiar Correo";
+    }
+    
     render();
     saveState();
   }
@@ -542,6 +677,162 @@ Saludos cordiales,`
     }
   }
 
+  function getDefaultSessions(version) {
+    const isLite = version === "Lite";
+    const sessions = [
+      {
+        date: "Por definir",
+        time: "Por definir",
+        module: "Instalación",
+        topic: "Instalación del sistema en Servidor y terminales.\nConfiguraciones generales (impresoras, datos de compañía, cajones de dinero, lectores, etc.).\nCarga inicial de catálogos y migración de base de datos.",
+        duration: "3 horas",
+        modality: "Virtual"
+      },
+      {
+        date: "Por definir",
+        time: "Por definir",
+        module: "Generalidades",
+        topic: "Introducción al sistema, explicación de la interfaz.\nCreación de usuarios, grupos de permisos y cajeros.",
+        duration: "2 horas",
+        modality: "Virtual"
+      },
+      {
+        date: "Por definir",
+        time: "Por definir",
+        module: "Compras",
+        topic: "Creación de Proveedores.\nRegistro de Compras manual y por medio de XML (Factura Electrónica).",
+        duration: "2 horas",
+        modality: "Virtual"
+      },
+      {
+        date: "Por definir",
+        time: "Por definir",
+        module: "Inventarios",
+        topic: isLite 
+          ? "Creación de Artículos, Familias y Marcas.\nMovimientos de Inventario (Entradas y Salidas).\nToma física de mercadería y control de existencias."
+          : "Creación de Artículos, Familias y Marcas.\nMovimientos de Inventario (Entradas y Salidas).\nToma física de mercadería.\nMovimientos de Cuentas por Pagar (CxP) y Trámites de pago.",
+        duration: "3 horas",
+        modality: "Virtual"
+      },
+      {
+        date: "Por definir",
+        time: "Por definir",
+        module: "Facturación",
+        topic: "Apertura de caja.\nProceso de facturación (Preventas, Proformas y Factura Directa).\nDevoluciones y Notas de Crédito.\nControl de cajas, retiros de dinero y cierres de caja.",
+        duration: "3 horas",
+        modality: "Virtual"
+      }
+    ];
+
+    if (!isLite) {
+      sessions.push({
+        date: "Por definir",
+        time: "Por definir",
+        module: "Cuentas por Cobrar",
+        topic: "Creación de Clientes y políticas de crédito.\nFacturación a crédito, cobros de recibos, abonos y cancelaciones.",
+        duration: "2 horas",
+        modality: "Virtual"
+      });
+    }
+
+    sessions.push({
+      date: "Por definir",
+      time: "Por definir",
+      module: "Acompañamiento",
+      topic: "Acompañamiento en sitio/remoto para el uso oficial del sistema en el arranque de la operación.",
+      duration: "3 horas",
+      modality: "Virtual"
+    });
+
+    sessions.push({
+      date: "Por definir",
+      time: "Por definir",
+      module: "Reportería",
+      topic: "Revisión de reportes de ventas, compras, inventario, movimientos de caja e informe D-104.",
+      duration: "1 hora",
+      modality: "Virtual"
+    });
+
+    return sessions;
+  }
+
+  function addSessionRow(s = {}) {
+    const container = $("sessionRowsContainer");
+    if (!container) return;
+
+    const row = document.createElement("div");
+    row.className = "session-row-card";
+    row.style.cssText = "background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 12px; margin-bottom: 12px; position: relative;";
+
+    row.innerHTML = `
+      <button type="button" class="btn-delete-row" style="position: absolute; top: 8px; right: 8px; background: none; border: none; color: #ff5252; cursor: pointer; font-size: 18px; font-weight: bold;">&times;</button>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div class="field-group" style="margin:0;">
+          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Fecha</label>
+          <input type="text" class="session-date" placeholder="Ej: 18/02/2026" value="${escapeHtml(s.date || "")}">
+        </div>
+        <div class="field-group" style="margin:0;">
+          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Hora</label>
+          <input type="text" class="session-time" placeholder="Ej: De 1:30pm a 4:30pm" value="${escapeHtml(s.time || "")}">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+        <div class="field-group" style="margin:0;">
+          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Duración</label>
+          <input type="text" class="session-duration" placeholder="Ej: 3 horas" value="${escapeHtml(s.duration || "")}">
+        </div>
+        <div class="field-group" style="margin:0;">
+          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Modalidad</label>
+          <select class="session-modality">
+            <option value="Virtual" ${s.modality === "Virtual" ? "selected" : ""}>Virtual</option>
+            <option value="Presencial" ${s.modality === "Presencial" ? "selected" : ""}>Presencial</option>
+            <option value="Por definir" ${s.modality === "Por definir" ? "selected" : ""}>Por definir</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 8px;">
+        <div class="field-group" style="margin:0;">
+          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Módulo</label>
+          <input type="text" class="session-module" placeholder="Ej: Facturación" value="${escapeHtml(s.module || "")}">
+        </div>
+        <div class="field-group" style="margin:0;">
+          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Tema de Capacitación</label>
+          <textarea class="session-topic" placeholder="Ej: Introducción al sistema..." rows="2" style="height:auto; min-height:40px;">${escapeHtml(s.topic || "")}</textarea>
+        </div>
+      </div>
+    `;
+
+    row.querySelectorAll("input, select, textarea").forEach(el => {
+      el.oninput = () => {
+        render();
+        saveState();
+      };
+      el.onchange = () => {
+        render();
+        saveState();
+      };
+    });
+
+    row.querySelector(".btn-delete-row").onclick = () => {
+      row.remove();
+      render();
+      saveState();
+    };
+
+    container.appendChild(row);
+  }
+
+  function loadDefaultPlan() {
+    const container = $("sessionRowsContainer");
+    if (!container) return;
+    container.innerHTML = "";
+    
+    const version = val("quposVersion") || "Standard";
+    const defaultSessions = getDefaultSessions(version);
+    defaultSessions.forEach(s => addSessionRow(s));
+    render();
+  }
+
   // === LOCAL STORAGE AUTO-SAVE ===
   function saveState() {
     const state = {
@@ -549,7 +840,7 @@ Saludos cordiales,`
     };
 
     document.querySelectorAll("input, select, textarea").forEach(el => {
-      if (el.id) {
+      if (el.id && !el.classList.contains("session-date") && !el.classList.contains("session-time") && !el.classList.contains("session-duration") && !el.classList.contains("session-module") && !el.classList.contains("session-topic")) {
         if (el.type === "checkbox") {
           state[el.id] = el.checked;
         } else {
@@ -558,13 +849,28 @@ Saludos cordiales,`
       }
     });
 
+    // Save sessions
+    const sessionCards = document.querySelectorAll(".session-row-card");
+    const sessions = Array.from(sessionCards).map(card => ({
+      date: card.querySelector(".session-date").value,
+      time: card.querySelector(".session-time").value,
+      duration: card.querySelector(".session-duration").value,
+      modality: card.querySelector(".session-modality").value,
+      module: card.querySelector(".session-module").value,
+      topic: card.querySelector(".session-topic").value
+    }));
+    state.sessions = sessions;
+
     localStorage.setItem("ncq_coordinacion_state", JSON.stringify(state));
   }
 
   function loadState() {
     try {
       const stateStr = localStorage.getItem("ncq_coordinacion_state");
-      if (!stateStr) return;
+      if (!stateStr) {
+        loadDefaultPlan();
+        return;
+      }
       const state = JSON.parse(stateStr);
 
       if (state.activeTab) {
@@ -572,7 +878,7 @@ Saludos cordiales,`
       }
 
       Object.keys(state).forEach(id => {
-        if (id === "activeTab") return;
+        if (id === "activeTab" || id === "sessions") return;
         const el = $(id);
         if (el) {
           if (el.type === "checkbox") {
@@ -582,8 +888,20 @@ Saludos cordiales,`
           }
         }
       });
+
+      // Restore sessions
+      const container = $("sessionRowsContainer");
+      if (container) {
+        container.innerHTML = "";
+        if (state.sessions && Array.isArray(state.sessions)) {
+          state.sessions.forEach(s => addSessionRow(s));
+        } else {
+          loadDefaultPlan();
+        }
+      }
     } catch (e) {
       console.error("Error loading state:", e);
+      loadDefaultPlan();
     }
   }
 
@@ -671,6 +989,32 @@ Saludos cordiales,`
       const previewFrame = $("preview");
       if (previewFrame) {
         previewFrame.contentWindow.print();
+      }
+    };
+  }
+
+  // Plan de Trabajo builder actions
+  const btnAddSession = $("btnAddSession");
+  if (btnAddSession) {
+    btnAddSession.onclick = () => {
+      addSessionRow({
+        date: "Por definir",
+        time: "Por definir",
+        duration: "2 horas",
+        modality: "Virtual",
+        module: "",
+        topic: ""
+      });
+      render();
+      saveState();
+    };
+  }
+
+  const btnLoadPlanTemplate = $("btnLoadPlanTemplate");
+  if (btnLoadPlanTemplate) {
+    btnLoadPlanTemplate.onclick = () => {
+      if (confirm("¿Está seguro de cargar la plantilla? Esto reemplazará las sesiones actuales del plan de trabajo.")) {
+        loadDefaultPlan();
       }
     };
   }

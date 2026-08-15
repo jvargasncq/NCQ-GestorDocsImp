@@ -102,19 +102,15 @@
       <!-- PLAN DE TRABAJO SECTION -->
       <div id="sectionPlanDeTrabajo" class="hidden form-section">
         <hr class="hr">
-        <div class="field-group">
-          <label>Plan de Trabajo</label>
-          <textarea id="planTrabajoDetalle" placeholder="Detalles del plan de trabajo..."></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="margin:0; font-size:16px; font-weight: 600; color: var(--text-color);">Plan de Trabajo</h3>
+          <div style="display:flex; gap: 8px;">
+            <button type="button" id="btnLoadPlanTemplate" class="btn btn-secondary" style="padding: 6px 12px; font-size: 13px; cursor: pointer; border-radius: 6px;">Cargar Plantilla</button>
+            <button type="button" id="btnAddSession" class="btn btn-secondary" style="padding: 6px 12px; font-size: 13px; cursor: pointer; border-radius: 6px;">+ Agregar Fila</button>
+          </div>
         </div>
-
-        <div class="field-group">
-          <label>Pendientes Cliente</label>
-          <textarea id="clientPendingsPlan" placeholder="Lista de tareas del cliente..."></textarea>
-        </div>
-
-        <div class="field-group">
-          <label>Pendientes NCQ</label>
-          <textarea id="ncqPendingsPlan" placeholder="Lista de tareas nuestras..."></textarea>
+        <div id="sessionRowsContainer">
+          <!-- Dynamic row cards will be generated here -->
         </div>
       </div>
 
