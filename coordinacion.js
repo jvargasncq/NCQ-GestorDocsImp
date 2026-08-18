@@ -8,23 +8,34 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const IMPLANTERS = [
-    { value: "", label: "Seleccione un implantador" },
-    { value: "Josue", label: "Josue" },
-    { value: "Melvin", label: "Melvin" },
-    { value: "Juan Carlos", label: "Juan Carlos" },
-    { value: "Kenneth", label: "Kenneth" },
-    { value: "Fabricio", label: "Fabricio" },
-    { value: "Alfonso", label: "Alfonso" },
-    { value: "Kendall", label: "Kendall" },
-    { value: "Karina", label: "Karina" },
-    { value: "Steven", label: "Steven" },
-    { value: "Josue Cordero", label: "Josue Cordero" }
+    { value: "", label: "Seleccione un coordinador" },
+    { value: "Yeimy Gamboa", label: "Yeimy" },
+    { value: "Marielena Alvarez", label: "Marielena" },
+    { value: "Adriana Picado", label: "Adriana" }
   ];
 
   const BRAND_THEMES = {
-    lite: { primaryColor: "#7bb13c", lightColor: "#93c754", darkColor: "#618f2b", bgHighlight: "#f5f9f0", logo: "https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png" },
-    standard: { primaryColor: "#f27221", lightColor: "#fa8943", darkColor: "#d1560a", bgHighlight: "#fef6f1", logo: "https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png" },
-    erp: { primaryColor: "#009edb", lightColor: "#33b8eb", darkColor: "#007ab0", bgHighlight: "#f0f8fd", logo: "https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png" }
+    lite: {
+      logo: "https://nlxfcqyqzaigdohkvpmf.supabase.co/storage/v1/object/public/avatars/Logos%20adicionales/lite.png",
+      darkColor: "#008800",
+      primaryColor: "#00AA00",
+      lightColor: "#4CAF50",
+      bgHighlight: "#f6fff5"
+    },
+    estandar: {
+      logo: "https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png",
+      darkColor: "#F25D21",
+      primaryColor: "#F27221",
+      lightColor: "#F8A227",
+      bgHighlight: "#fff8f1"
+    },
+    erp: {
+      logo: "https://nlxfcqyqzaigdohkvpmf.supabase.co/storage/v1/object/public/avatars/Logos%20adicionales/erp.png",
+      darkColor: "#005ec4",
+      primaryColor: "#0081FC",
+      lightColor: "#5cb8ff",
+      bgHighlight: "#f2f8ff"
+    }
   };
 
   const ONBOARDING_TEMPLATES = {
@@ -34,8 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
       content: `Buenos días [Nombre],
 <br><br>
 Es un gusto iniciar este proceso de implementación con ustedes. Conforme a lo conversado, adjuntamos el plan de trabajo en formato PDF, el cual detalla las sesiones, fechas y tiempos estimados para el desarrollo de la implementación del sistema Qupos.
-<br><br>
-<strong>(ADJUNTAR PLAN DE TRABAJO – PDF)</strong>
 <br><br>
 <strong>Para iniciar con la instalación:</strong>
 <ul>
@@ -54,7 +63,7 @@ Es un gusto iniciar este proceso de implementación con ustedes. Conforme a lo c
 <strong>Sobre los tiempos y siguientes etapas:</strong>
 <ul>
   <li>Las horas del plan son un estimado inicial; si se requiere tiempo adicional conforme avancen las capacitaciones, lo revisaremos en conjunto.</li>
-  <li>El acompañamiento en el uso oficial del sistema y la configuración de facturación electrónica requieren coordinación previa con el implantador asignado. Esta fecha se confirmará según el avance del proceso, por lo que el cumplimiento de las sesiones programadas es clave para no afectar esta etapa.</li>
+  <li>El acompañamiento en el uso oficial del sistema y la configuración de facturación electrónica requieren coordinación previa con el coordinador asignado. Esta fecha se confirmará según el avance del proceso, por lo que el cumplimiento de las sesiones programadas es clave para no afectar esta etapa.</li>
 </ul>
 Quedamos atentos a cualquier consulta y con el compromiso de acompañarlos en cada etapa de esta implementación.
 <br><br>
@@ -66,8 +75,6 @@ Saludos cordiales,`
       content: `Buenos días [Nombre],
 <br><br>
 Es un gusto iniciar este proceso de implementación con ustedes. Conforme a lo conversado, adjuntamos el plan de trabajo en formato PDF, el cual detalla las sesiones, fechas y tiempos estimados para el desarrollo de la implementación del sistema Qupos.
-<br><br>
-<strong>(ADJUNTAR PLAN DE TRABAJO – PDF)</strong>
 <br><br>
 <strong>Para iniciar con la instalación:</strong>
 <ul>
@@ -87,7 +94,7 @@ Es un gusto iniciar este proceso de implementación con ustedes. Conforme a lo c
 <strong>Sobre los tiempos y siguientes etapas:</strong>
 <ul>
   <li>Las horas del plan son un estimado inicial; si se requiere tiempo adicional conforme avancen las capacitaciones, lo revisaremos en conjunto.</li>
-  <li>El acompañamiento en el uso oficial del sistema y la configuración de facturación electrónica requieren coordinación previa con el implantador asignado. Esta fecha se confirmará según el avance del proceso, por lo que el cumplimiento de las sesiones programadas es clave para no afectar esta etapa.</li>
+  <li>El acompañamiento en el uso oficial del sistema y la configuración de facturación electrónica requieren coordinación previa con el coordinador asignado. Esta fecha se confirmará según el avance del proceso, por lo que el cumplimiento de las sesiones programadas es clave para no afectar esta etapa.</li>
 </ul>
 Quedamos atentos a cualquier consulta y con el compromiso de acompañarlos en cada etapa de esta implementación.
 <br><br>
@@ -158,8 +165,6 @@ Saludos cordiales,`
       content: `Buenas tardes [Nombre],
 <br><br>
 Es un gusto saludarles. Conforme a lo conversado vía telefónica, adjuntamos los archivos necesarios para realizar la migración de sus datos al sistema Qupos:
-<br><br>
-<strong>(ADJUNTAR ARCHIVOS DE MIGRACIÓN)</strong>
 <br><br>
 <strong>Archivos incluidos:</strong>
 <ul>
@@ -290,7 +295,7 @@ Saludos cordiales,`
     const version = val("quposVersion").toLowerCase();
     if (version.includes("lite")) return BRAND_THEMES.lite;
     if (version.includes("erp")) return BRAND_THEMES.erp;
-    return BRAND_THEMES.standard;
+    return BRAND_THEMES.estandar;
   }
 
   function createLink(url, imgUrl) {
@@ -433,6 +438,11 @@ Saludos cordiales,`
       emailContent = emailContent.replaceAll("[Razón Comercial del Cliente]", escapeHtml(clientName));
       emailContent = emailContent.replaceAll("[Razón Social del cliente]", escapeHtml(clientName));
       
+      if (templateKey === "v6" || templateKey === "v7") {
+        const surveyLink = val("surveyLink").trim() || "https://encuesta.qupos.com";
+        emailContent = emailContent.replaceAll("https://encuesta.qupos.com", escapeHtml(resolveUrl(surveyLink)));
+      }
+      
       return buildEmailShell(CONFIG, emailContent);
     },
     planDeTrabajo: () => {
@@ -441,17 +451,21 @@ Saludos cordiales,`
       const clientContact = val("clientContact").trim() || "Contacto";
       const installDate = formatDate(val("installDate"));
       const implanter = val("implanterNCQ") || "Por definir";
-      const version = val("quposVersion") || "Standard";
+      const version = val("quposVersion") || "Estandar";
 
       const sessionCards = document.querySelectorAll(".session-row-card");
-      const sessions = Array.from(sessionCards).map(card => ({
-        date: card.querySelector(".session-date").value,
-        time: card.querySelector(".session-time").value,
-        duration: card.querySelector(".session-duration").value,
-        modality: card.querySelector(".session-modality").value,
-        module: card.querySelector(".session-module").value,
-        topic: card.querySelector(".session-topic").value
-      }));
+      const sessions = Array.from(sessionCards).map(card => {
+        const dateVal = card.querySelector(".session-date").value;
+        const timeVal = card.querySelector(".session-time").value;
+        return {
+          date: (dateVal && dateVal !== "Por definir") ? formatDate(dateVal) : "Por definir",
+          time: timeVal || "Por definir",
+          duration: card.querySelector(".session-duration").value,
+          modality: card.querySelector(".session-modality").value,
+          module: card.querySelector(".session-module").value,
+          topic: card.querySelector(".session-topic").value
+        };
+      });
 
       return `<!DOCTYPE html>
 <html lang="es">
@@ -558,12 +572,8 @@ Saludos cordiales,`
       <td width="45%"><strong>Fecha de emisión:</strong> ${installDate || "Por definir"}</td>
     </tr>
     <tr>
-      <td><strong>Cliente a cargo:</strong> ${escapeHtml(clientContact)}</td>
-      <td><strong>Implantador NCQ:</strong> ${escapeHtml(implanter)}</td>
-    </tr>
-    <tr>
       <td><strong>Licencia / Versión Qupos:</strong> ${escapeHtml(version)}</td>
-      <td><strong>Estado:</strong> Borrador de Trabajo</td>
+      <td><strong>Coordinador NCQ:</strong> ${escapeHtml(implanter)}</td>
     </tr>
   </table>
 
@@ -628,6 +638,56 @@ Saludos cordiales,`
 
   function render() {
     updateSubject();
+
+    const isOnboarding = activeTab === "onboarding";
+    
+    // Toggle global inputs visibility based on active tab
+    const rowDateImplanter = $("rowDateImplanter");
+    if (rowDateImplanter) {
+      rowDateImplanter.classList.toggle("hidden", isOnboarding);
+    }
+
+    const divName = $("divClientName");
+    if (divName) {
+      divName.classList.toggle("hidden", isOnboarding);
+    }
+    const divContact = $("divClientContact");
+    if (divContact) {
+      divContact.classList.toggle("hidden", !isOnboarding);
+      divContact.style.gridColumn = isOnboarding ? "span 2" : "auto";
+    }
+
+    // Toggle onboarding template alerts
+    const alertBox = $("onboardingAlert");
+    if (alertBox) {
+      if (isOnboarding) {
+        const templateKey = val("onboardingTemplate") || "v1";
+        if (templateKey === "v1" || templateKey === "v2") {
+          alertBox.textContent = "⚠️ Recordatorio: Debe adjuntar el Plan de Trabajo en formato PDF antes de enviar el correo.";
+          alertBox.classList.remove("hidden");
+        } else if (templateKey === "v5") {
+          alertBox.textContent = "⚠️ Recordatorio: Debe adjuntar los Archivos de Migración antes de enviar el correo.";
+          alertBox.classList.remove("hidden");
+        } else {
+          alertBox.classList.add("hidden");
+        }
+      } else {
+        alertBox.classList.add("hidden");
+      }
+    }
+
+    // Toggle onboarding template survey link field
+    const divSurveyLink = $("divSurveyLink");
+    if (divSurveyLink) {
+      if (isOnboarding) {
+        const templateKey = val("onboardingTemplate") || "v1";
+        const isSurveyTemplate = templateKey === "v6" || templateKey === "v7";
+        divSurveyLink.classList.toggle("hidden", !isSurveyTemplate);
+      } else {
+        divSurveyLink.classList.add("hidden");
+      }
+    }
+
     const html = renderers[activeTab]();
     const iframe = $("preview");
     if (iframe) {
@@ -756,48 +816,96 @@ Saludos cordiales,`
     return sessions;
   }
 
-  function addSessionRow(s = {}) {
+  const getTopicSummary = (topic) => {
+    let t = (topic || "").trim() || "Sin tema";
+    t = t.split("\n")[0];
+    if (t.length > 50) {
+      t = t.substring(0, 47) + "...";
+    }
+    return t;
+  };
+
+  const parseToInputDate = (dateStr) => {
+    if (!dateStr || dateStr === "Por definir") return "";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+      const [day, month, year] = dateStr.split("/");
+      return `${year}-${month}-${day}`;
+    }
+    return "";
+  };
+
+  const parseToInputTime = (timeStr) => {
+    if (!timeStr || timeStr === "Por definir") return "";
+    if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
+    return "";
+  };
+
+  const getFormattedDateText = (dateStr) => {
+    if (!dateStr || dateStr === "Por definir") return "Por definir";
+    if (dateStr.includes("-")) return formatDate(dateStr);
+    return dateStr;
+  };
+
+  function addSessionRow(s = {}, startExpanded = false) {
     const container = $("sessionRowsContainer");
     if (!container) return;
 
     const row = document.createElement("div");
-    row.className = "session-row-card";
-    row.style.cssText = "background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 12px; margin-bottom: 12px; position: relative;";
+    row.className = "session-row-card" + (startExpanded ? "" : " collapsed");
+    row.style.cssText = "background: rgba(255,255,255,0.45); border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 12px; margin-bottom: 12px; position: relative; transition: all 0.2s ease;";
+
+    const displayStyle = startExpanded ? "block" : "none";
+    const rotateStyle = startExpanded ? "rotate(0deg)" : "rotate(-90deg)";
 
     row.innerHTML = `
-      <button type="button" class="btn-delete-row" style="position: absolute; top: 8px; right: 8px; background: none; border: none; color: #ff5252; cursor: pointer; font-size: 18px; font-weight: bold;">&times;</button>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-        <div class="field-group" style="margin:0;">
-          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Fecha</label>
-          <input type="text" class="session-date" placeholder="Ej: 18/02/2026" value="${escapeHtml(s.date || "")}">
+      <div class="session-card-header" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;">
+        <div style="display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1;">
+          <span class="chevron-icon" style="font-size: 10px; transition: transform 0.2s ease; color: var(--muted); transform: ${rotateStyle}; display: inline-block;">▼</span>
+          <span class="session-summary-text" style="font-weight: 600; font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <strong>${escapeHtml(s.module || "Nueva Sesión")}</strong> - ${escapeHtml(getTopicSummary(s.topic))} (${escapeHtml(getFormattedDateText(s.date))})
+          </span>
         </div>
-        <div class="field-group" style="margin:0;">
-          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Hora</label>
-          <input type="text" class="session-time" placeholder="Ej: De 1:30pm a 4:30pm" value="${escapeHtml(s.time || "")}">
-        </div>
+        <button type="button" class="btn-delete-row" title="Eliminar Sesión" style="background: none; border: none; color: #ff5252; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, color 0.2s ease;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-        <div class="field-group" style="margin:0;">
-          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Duración</label>
-          <input type="text" class="session-duration" placeholder="Ej: 3 horas" value="${escapeHtml(s.duration || "")}">
+      <div class="session-card-body" style="display: ${displayStyle}; margin-top: 12px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 12px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div class="field-group" style="margin:0;">
+            <label style="font-size:11.5px; margin-bottom:2px; color: var(--muted); font-weight:600;">Fecha</label>
+            <input type="date" class="session-date" value="${parseToInputDate(s.date)}">
+          </div>
+          <div class="field-group" style="margin:0;">
+            <label style="font-size:11.5px; margin-bottom:2px; color: var(--muted); font-weight:600;">Hora</label>
+            <input type="time" class="session-time" value="${parseToInputTime(s.time)}">
+          </div>
         </div>
-        <div class="field-group" style="margin:0;">
-          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Modalidad</label>
-          <select class="session-modality">
-            <option value="Virtual" ${s.modality === "Virtual" ? "selected" : ""}>Virtual</option>
-            <option value="Presencial" ${s.modality === "Presencial" ? "selected" : ""}>Presencial</option>
-            <option value="Por definir" ${s.modality === "Por definir" ? "selected" : ""}>Por definir</option>
-          </select>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div class="field-group" style="margin:0;">
+            <label style="font-size:11.5px; margin-bottom:2px; color: var(--muted); font-weight:600;">Duración</label>
+            <input type="text" class="session-duration" placeholder="Ej: 3 horas" value="${escapeHtml(s.duration || "")}">
+          </div>
+          <div class="field-group" style="margin:0;">
+            <label style="font-size:11.5px; margin-bottom:2px; color: var(--muted); font-weight:600;">Modalidad</label>
+            <select class="session-modality">
+              <option value="Virtual" ${s.modality === "Virtual" ? "selected" : ""}>Virtual</option>
+              <option value="Presencial" ${s.modality === "Presencial" ? "selected" : ""}>Presencial</option>
+              <option value="Por definir" ${s.modality === "Por definir" ? "selected" : ""}>Por definir</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 8px;">
-        <div class="field-group" style="margin:0;">
-          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Módulo</label>
-          <input type="text" class="session-module" placeholder="Ej: Facturación" value="${escapeHtml(s.module || "")}">
-        </div>
-        <div class="field-group" style="margin:0;">
-          <label style="font-size:11px; margin-bottom:2px; color: var(--text-color);">Tema de Capacitación</label>
-          <textarea class="session-topic" placeholder="Ej: Introducción al sistema..." rows="2" style="height:auto; min-height:40px;">${escapeHtml(s.topic || "")}</textarea>
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 8px;">
+          <div class="field-group" style="margin:0;">
+            <label style="font-size:11.5px; margin-bottom:2px; color: var(--muted); font-weight:600;">Módulo</label>
+            <input type="text" class="session-module" placeholder="Ej: Facturación" value="${escapeHtml(s.module || "")}">
+          </div>
+          <div class="field-group" style="margin:0;">
+            <label style="font-size:11.5px; margin-bottom:2px; color: var(--muted); font-weight:600;">Tema de Capacitación</label>
+            <textarea class="session-topic" placeholder="Ej: Introducción al sistema..." rows="2" style="height:auto; min-height:40px;">${escapeHtml(s.topic || "")}</textarea>
+          </div>
         </div>
       </div>
     `;
@@ -819,6 +927,43 @@ Saludos cordiales,`
       saveState();
     };
 
+    // Toggle collapse/expand on header click
+    const header = row.querySelector(".session-card-header");
+    const body = row.querySelector(".session-card-body");
+    const chevron = row.querySelector(".chevron-icon");
+    const deleteBtn = row.querySelector(".btn-delete-row");
+
+    header.onclick = (e) => {
+      if (deleteBtn.contains(e.target)) return;
+
+      const isCollapsed = row.classList.contains("collapsed");
+      if (isCollapsed) {
+        row.classList.remove("collapsed");
+        body.style.display = "block";
+        chevron.style.transform = "rotate(0deg)";
+      } else {
+        row.classList.add("collapsed");
+        body.style.display = "none";
+        chevron.style.transform = "rotate(-90deg)";
+      }
+    };
+
+    // Real-time summary text updates as inputs change
+    const moduleInput = row.querySelector(".session-module");
+    const topicInput = row.querySelector(".session-topic");
+    const dateInput = row.querySelector(".session-date");
+    const summaryText = row.querySelector(".session-summary-text");
+
+    const updateSummary = () => {
+      const modVal = moduleInput.value.trim() || "Nueva Sesión";
+      const topVal = topicInput.value.trim();
+      const dateVal = getFormattedDateText(dateInput.value);
+      summaryText.innerHTML = `<strong>${escapeHtml(modVal)}</strong> - ${escapeHtml(getTopicSummary(topVal))} (${escapeHtml(dateVal)})`;
+    };
+
+    moduleInput.addEventListener("input", updateSummary);
+    topicInput.addEventListener("input", updateSummary);
+    dateInput.addEventListener("input", updateSummary);
     container.appendChild(row);
   }
 
@@ -827,7 +972,7 @@ Saludos cordiales,`
     if (!container) return;
     container.innerHTML = "";
     
-    const version = val("quposVersion") || "Standard";
+    const version = val("quposVersion") || "Estandar";
     const defaultSessions = getDefaultSessions(version);
     defaultSessions.forEach(s => addSessionRow(s));
     render();
@@ -835,72 +980,16 @@ Saludos cordiales,`
 
   // === LOCAL STORAGE AUTO-SAVE ===
   function saveState() {
-    const state = {
-      activeTab: activeTab
-    };
-
-    document.querySelectorAll("input, select, textarea").forEach(el => {
-      if (el.id && !el.classList.contains("session-date") && !el.classList.contains("session-time") && !el.classList.contains("session-duration") && !el.classList.contains("session-module") && !el.classList.contains("session-topic")) {
-        if (el.type === "checkbox") {
-          state[el.id] = el.checked;
-        } else {
-          state[el.id] = el.value;
-        }
-      }
-    });
-
-    // Save sessions
-    const sessionCards = document.querySelectorAll(".session-row-card");
-    const sessions = Array.from(sessionCards).map(card => ({
-      date: card.querySelector(".session-date").value,
-      time: card.querySelector(".session-time").value,
-      duration: card.querySelector(".session-duration").value,
-      modality: card.querySelector(".session-modality").value,
-      module: card.querySelector(".session-module").value,
-      topic: card.querySelector(".session-topic").value
-    }));
-    state.sessions = sessions;
-
-    localStorage.setItem("ncq_coordinacion_state", JSON.stringify(state));
+    // Persistence disabled per user request
   }
 
   function loadState() {
     try {
-      const stateStr = localStorage.getItem("ncq_coordinacion_state");
-      if (!stateStr) {
-        loadDefaultPlan();
-        return;
-      }
-      const state = JSON.parse(stateStr);
-
-      if (state.activeTab) {
-        activeTab = state.activeTab;
-      }
-
-      Object.keys(state).forEach(id => {
-        if (id === "activeTab" || id === "sessions") return;
-        const el = $(id);
-        if (el) {
-          if (el.type === "checkbox") {
-            el.checked = state[id];
-          } else {
-            el.value = state[id];
-          }
-        }
-      });
-
-      // Restore sessions
-      const container = $("sessionRowsContainer");
-      if (container) {
-        container.innerHTML = "";
-        if (state.sessions && Array.isArray(state.sessions)) {
-          state.sessions.forEach(s => addSessionRow(s));
-        } else {
-          loadDefaultPlan();
-        }
-      }
+      localStorage.removeItem("ncq_coordinacion_state");
+      loadDefaultPlan();
+      switchTab("onboarding");
     } catch (e) {
-      console.error("Error loading state:", e);
+      console.error("Error during loadState reset:", e);
       loadDefaultPlan();
     }
   }
@@ -1004,18 +1093,9 @@ Saludos cordiales,`
         modality: "Virtual",
         module: "",
         topic: ""
-      });
+      }, true);
       render();
       saveState();
-    };
-  }
-
-  const btnLoadPlanTemplate = $("btnLoadPlanTemplate");
-  if (btnLoadPlanTemplate) {
-    btnLoadPlanTemplate.onclick = () => {
-      if (confirm("¿Está seguro de cargar la plantilla? Esto reemplazará las sesiones actuales del plan de trabajo.")) {
-        loadDefaultPlan();
-      }
     };
   }
 

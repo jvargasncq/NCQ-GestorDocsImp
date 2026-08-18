@@ -91,7 +91,7 @@
         <label>Licencia Qupos</label>
         <select id="quposVersion">
           <option value="Lite">Lite</option>
-          <option value="Standard" selected>Standard</option>
+          <option value="Estandar" selected>Estandar</option>
           <option value="ERP">ERP</option>
         </select>
       </div>
@@ -371,8 +371,55 @@
       <div id="sectionPuestaEnMarcha" class="hidden form-section">
         <hr class="hr">
         <div class="field-group">
-          <label>Trabajo Realizado</label>
-          <textarea id="workDonePuestaEnMarcha" placeholder="Describa el trabajo realizado..."></textarea>
+          <label>Incluir en Trabajo Realizado:</label>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkPEmRespaldos">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Revisión de Respaldos</span>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkPEmFE">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Activación de Facturación Electrónica</span>
+            </div>
+            <div id="divPEmFEConfigurado" class="hidden field-group" style="margin-left: 56px; margin-top: -8px; margin-bottom: 8px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: var(--text);">
+                <input type="checkbox" id="checkPEmFEConfigurado">
+                <span>Configurado previamente</span>
+              </label>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkPEmReenvioRec">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Activación de Recepción de documentos</span>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkPEmRegistroCompras">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Registro de compras desde Recepción</span>
+            </div>
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="checkPEmConsultasAdicionales">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Consultas adicionales</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="divPEmConsultasAdicionales" class="hidden field-group">
+          <label>Detalle de Consultas Adicionales (una por línea)</label>
+          <textarea id="pemConsultasAdicionales" placeholder="Escriba las consultas adicionales..." style="min-height: 80px;"></textarea>
         </div>
 
         <div class="field-group">

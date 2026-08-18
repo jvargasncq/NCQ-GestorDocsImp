@@ -175,7 +175,7 @@ body {
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 h1 {
@@ -194,7 +194,8 @@ h2 {
 /* Apple-style Tab controller */
 .tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 2px;
   background: rgba(0, 0, 0, 0.04);
   padding: 3px;
@@ -233,11 +234,10 @@ h2 {
 /* Inputs & Form Elements */
 label {
   display: block;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.01em;
 }
 
 input,

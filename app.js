@@ -165,7 +165,7 @@
         lightColor: "#4CAF50",
         bgHighlight: "#f6fff5"
       },
-      Standard: {
+      Estandar: {
         logo: "https://www.qupos.com/assets/qupos-logo-O7Yzz17d.png",
         darkColor: "#F25D21",
         primaryColor: "#F27221",
@@ -181,7 +181,7 @@
       }
     };
 
-    return themes[version] || themes.Standard;
+    return themes[version] || themes.Estandar;
   };
 
   function buildSocialRow(countryData) {
@@ -558,17 +558,64 @@
       return buildEmailShell(CONFIG, body);
     },
     puestaEnMarcha: () => {
+      const check = id => $(id) && $(id).checked;
       const data = {
         installDate: formatDate(val("installDate")),
         implanterNCQ: val("implanterNCQ"),
         clientName: val("clientName"),
         clientContact: val("clientContact"),
         quposVersion: val("quposVersion"),
-        workDone: val("workDonePuestaEnMarcha"),
         clientPendings: val("clientPendingsPuestaEnMarcha"),
-        ncqPendings: val("ncqPendingsPuestaEnMarcha")
+        ncqPendings: val("ncqPendingsPuestaEnMarcha"),
+        items: [
+          {
+            label: "Revisión de Respaldos",
+            active: check("checkPEmRespaldos"),
+            point: "Se confirma que los respaldos de seguridad se realicen de forma correcta tanto a nivel local como en la nube."
+          },
+          {
+            label: "Activación de Facturación Electrónica",
+            active: check("checkPEmFE"),
+            point: check("checkPEmFEConfigurado")
+              ? "Se verifica el correcto estado y funcionamiento de las credenciales de facturación electrónica configuradas previamente."
+              : "Se configuran las credenciales de facturación electrónica y se realizan pruebas para verificar su correcto funcionamiento."
+          },
+          {
+            label: "Activación de Recepción de documentos",
+            active: check("checkPEmReenvioRec"),
+            point: "Se configura el reenvío automático de documentos y se explica el funcionamiento de la pantalla de recepción de documentos."
+          },
+          {
+            label: "Registro de compras desde Recepción",
+            active: check("checkPEmRegistroCompras"),
+            point: "Se explica de manera detallada el proceso de registro de compras a partir de los documentos aceptados en la pantalla de recepción de documentos."
+          }
+        ]
       };
+
+      const additionalPoints = check("checkPEmConsultasAdicionales")
+        ? val("pemConsultasAdicionales").split("\n").map(l => l.trim()).filter(l => l)
+        : [];
+
       const theme = getBrandTheme();
+      const activeItems = data.items.filter(i => i.active);
+      let workHtml = "";
+      if (activeItems.length > 0) {
+        workHtml = `
+          <ul style="margin: 0 0 16px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">
+            ${activeItems.map(i => `<li style="margin-bottom: 6px;"><strong>${i.label}:</strong> ${i.point}</li>`).join("")}
+          </ul>`;
+      }
+
+      let additionalHtml = "";
+      if (check("checkPEmConsultasAdicionales") && additionalPoints.length > 0) {
+        additionalHtml = `
+          <p style="margin: 16px 0 6px 0; font-family: Arial, sans-serif; font-size: 15px; color: #333333;"><strong>Se aclaran dudas de los siguientes temas:</strong></p>
+          <ul style="margin: 0 0 16px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333;">
+            ${additionalPoints.map(p => `<li style="margin-bottom: 4px;">${escapeHtml(p)}</li>`).join("")}
+          </ul>`;
+      }
+
       const body = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #333333; border-collapse: collapse;">
           <tr><td style="padding: 4px 0;"><strong>Tema:</strong> Puesta en Marcha</td></tr>
@@ -578,9 +625,11 @@
           <tr><td style="padding: 4px 0;"><strong>Versión Qupos:</strong> ${data.quposVersion}</td></tr>
           <tr><td style="padding: 4px 0;"><strong>Implantador NCQ:</strong> ${data.implanterNCQ}</td></tr>
         </table>
-        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Se aclaran dudas de los siguientes temas:</h3>
+        <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 24px 0 12px 0; border-bottom: 2px solid ${theme.primaryColor}; padding-bottom: 6px;">Trabajo realizado:</h3>
         <div style="margin: 10px 0 20px 0;">
-          ${formatBulletPoints(data.workDone, "Sin temas aclarados")}
+          ${workHtml}
+          ${additionalHtml}
+          ${(!workHtml && !additionalHtml) ? '<p style="margin: 0; font-family: Arial, sans-serif; font-size: 15px; color: #777777; font-style: italic;">Sin temas aclarados</p>' : ''}
         </div>
         <h3 style="color: ${theme.primaryColor}; font-family: Arial, sans-serif; font-size: 18px; margin: 20px 0 12px 0;">Pendientes cliente:</h3>
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: ${theme.bgHighlight}; border-left: 4px solid ${theme.primaryColor}; margin: 10px 0 20px 0;">
@@ -656,6 +705,19 @@
     const divCxP = $("divDateCxP");
     if (divCxP) {
       divCxP.classList.toggle("hidden", !checkCxP);
+    }
+
+    // Dynamic Puesta en Marcha visibility sync
+    const checkFE = $("checkPEmFE") && $("checkPEmFE").checked;
+    const divFEConfigurado = $("divPEmFEConfigurado");
+    if (divFEConfigurado) {
+      divFEConfigurado.classList.toggle("hidden", !checkFE);
+    }
+
+    const checkConsultas = $("checkPEmConsultasAdicionales") && $("checkPEmConsultasAdicionales").checked;
+    const divConsultas = $("divPEmConsultasAdicionales");
+    if (divConsultas) {
+      divConsultas.classList.toggle("hidden", !checkConsultas);
     }
 
     updateSubject();
@@ -815,110 +877,20 @@
 
   // === LOCAL STORAGE AUTO-SAVE ===
   function saveState() {
-    const state = {
-      activeTab: activeTab
-    };
-
-    // Find all static inputs, selects, textareas
-    document.querySelectorAll("input, select, textarea").forEach(el => {
-      if (el.id) {
-        if (el.type === "checkbox") {
-          state[el.id] = el.checked;
-        } else {
-          state[el.id] = el.value;
-        }
-      }
-    });
-
-    // Save dynamic content checkboxes
-    const customCheckboxes = {};
-    document.querySelectorAll("#capacitacionCheckboxes input[type='checkbox']").forEach(cb => {
-      const key = `${cb.dataset.topic}:${cb.dataset.label}`;
-      customCheckboxes[key] = cb.checked;
-    });
-    state.customCheckboxes = customCheckboxes;
-
-    // Save multi-topic checklist options
-    const multiTopicCheckboxes = {};
-    document.querySelectorAll(".multi-topic-cb").forEach(cb => {
-      multiTopicCheckboxes[cb.dataset.topic] = cb.checked;
-    });
-    state.multiTopicCheckboxes = multiTopicCheckboxes;
-
-    localStorage.setItem("ncq_minutas_state", JSON.stringify(state));
+    // Persistence disabled per user request
   }
 
   function loadState() {
     try {
-      const stateStr = localStorage.getItem("ncq_minutas_state");
-      if (!stateStr) return;
-      const state = JSON.parse(stateStr);
-
-      if (state.activeTab) {
-        activeTab = state.activeTab;
-      }
-
-      // Populate static fields
-      Object.keys(state).forEach(id => {
-        if (id === "activeTab" || id === "customCheckboxes" || id === "multiTopicCheckboxes") return;
-        const el = $(id);
-        if (el) {
-          if (el.type === "checkbox") {
-            // PinPads switch always defaults to off when first getting into the page
-            el.checked = (id === "checkInstalacionPinPads") ? false : state[id];
-          } else {
-            el.value = state[id];
-          }
-        }
-      });
-
-      // Sync Capacitacion topic choices with restored quposVersion
+      localStorage.removeItem("ncq_minutas_state");
+      
+      // Initialize dynamic components to default clean state
       populateCapacitacionTopics();
       initMultiTopicUI();
-
-      // Restore multi-topic selections
-      if (state.multiTopicCheckboxes) {
-        Object.keys(state.multiTopicCheckboxes).forEach(topic => {
-          const cb = document.querySelector(`.multi-topic-cb[data-topic="${topic}"]`);
-          if (cb) {
-            cb.checked = state.multiTopicCheckboxes[topic];
-          }
-        });
-      }
-
-      // Update multi-topic UI visibility
-      const isMulti = $("isMultiTopic").checked;
-      $("singleTopicContainer").classList.toggle("hidden", isMulti);
-      $("multiTopicContainer").classList.toggle("hidden", !isMulti);
-
       updateCapacitacionUI();
-
-      // Restore checked status of dynamic checkmarks
-      if (state.customCheckboxes) {
-        Object.keys(state.customCheckboxes).forEach(key => {
-          const [topic, label] = key.split(":");
-          const cb = document.querySelector(`#capacitacionCheckboxes input[data-topic="${topic}"][data-label="${label}"]`);
-          if (cb) {
-            cb.checked = state.customCheckboxes[key];
-          }
-        });
-      }
-
-      const installQuposCheckbox = $("checkInstalacionQupos");
-      const quposDiv = $("divQuposFields");
-      if (installQuposCheckbox && quposDiv) {
-        quposDiv.classList.toggle("hidden", !installQuposCheckbox.checked);
-      }
-
-      const installPinpadsCheckbox = $("checkInstalacionPinPads");
-      const pinpadsDiv = $("divPinPadsFields");
-      if (installPinpadsCheckbox && pinpadsDiv) {
-        pinpadsDiv.classList.toggle("hidden", !installPinpadsCheckbox.checked);
-      }
-
-      switchTab(activeTab);
+      switchTab("instalacion");
     } catch (e) {
-      console.error("Error loading state from localStorage", e);
+      console.error("Error during loadState reset", e);
     }
   }
 
@@ -1105,6 +1077,18 @@
   const pinpadsCb = $("checkInstalacionPinPads");
   if (pinpadsDiv && pinpadsCb) {
     pinpadsDiv.classList.toggle("hidden", !pinpadsCb.checked);
+  }
+
+  const consultasDiv = $("divPEmConsultasAdicionales");
+  const consultasCb = $("checkPEmConsultasAdicionales");
+  if (consultasDiv && consultasCb) {
+    consultasDiv.classList.toggle("hidden", !consultasCb.checked);
+  }
+
+  const feDiv = $("divPEmFEConfigurado");
+  const feCb = $("checkPEmFE");
+  if (feDiv && feCb) {
+    feDiv.classList.toggle("hidden", !feCb.checked);
   }
 
   loadState();
