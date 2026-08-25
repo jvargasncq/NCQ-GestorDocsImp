@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Factun - Constructor de correos</title>
+  <link rel="icon" href="https://www.factun.com/favicon.ico" type="image/x-icon" />
+  <link rel="preload" href="https://www.factun.com/assets/logo-factun-CX_BAVCL.png" as="image" />
+  <link rel="preload" href="https://www.factun.com/assets/logo-factun-blanco-DB0yF7As.png" as="image" />
+  <link rel="preload" href="https://www.factun.com/images/fb.png" as="image" />
+  <link rel="preload" href="https://www.factun.com/images/ig.png" as="image" />
+  <link rel="stylesheet" href="factun.css" />
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="factun.html">
+        <img src="https://www.factun.com/assets/logo-factun-CX_BAVCL.png" alt="Factun">
+        <div class="brand-copy">
+          <div class="t">Centro de trabajo Factun</div>
+          <div class="s">Accesos internos</div>
+        </div>
+      </a>
+      <div class="topbar-main">
+        <div class="navlinks" aria-label="Navegación principal">
+          <a class="navlink active" href="factun.html">Factun</a>
+          <a class="navlink" href="coordinacion.html">Coordinación</a>
+          <a class="navlink" href="index.html">Minutas</a>
+          <a class="navlink" href="guia_hubspot.html">Guía</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="panel">
+
+      <div class="tabs" role="tablist" aria-label="Tipos de correo">
+        <button class="tab active" id="tabWelcome" type="button" data-tab="welcome">Bienvenida</button>
+        <button class="tab" id="tabPost" type="button" data-tab="post">Minuta</button>
+        <button class="tab" id="tabSac" type="button" data-tab="sac">Mensajes</button>
+      </div>
+
+      <div class="field-group">
+        <label>Asunto</label>
+        <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255, 255, 255, 0.4); padding: 10px 14px; min-height: 42px; backdrop-filter: blur(4px);">
+          <div id="subjectLabel" style="font-weight: bold; font-size: 13px; color: var(--text); flex: 1;">
+            Bienvenido a Factun
+          </div>
+          <button type="button" id="btnCopySubject" class="icon-btn" title="Copiar Asunto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hidden actual subject and country inputs -->
+      <input type="hidden" id="subject" value="Bienvenido a Factun">
+      <input type="hidden" id="country" value="CR">
+
+      <div id="welcomeCommonFields" style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="field-group">
+          <label>Cliente a cargo</label>
+          <input id="clientContact" placeholder="Ej: Juan Pérez">
+        </div>
+
+        <div class="field-group">
+          <label>Usuario</label>
+          <input id="userEmail" placeholder="cliente@correo.com">
+        </div>
+      </div>
+
+
+
+      <!-- ===== TAB: BIENVENIDA ===== -->
+      <div id="sectionWelcome" class="form-section">
+        <hr class="hr">
+
+        <div class="field-group">
+          <div class="switch-container">
+            <label class="switch">
+              <input type="checkbox" id="hasInduction" checked>
+              <span class="slider"></span>
+            </label>
+            <span class="switch-text">Inducción</span>
+          </div>
+        </div>
+
+        <div id="inductionFields" class="form-section">
+          <div class="row">
+            <div class="field-group">
+              <label>Fecha de inducción</label>
+              <input type="date" id="inductionDate">
+            </div>
+            <div class="field-group">
+              <label>Hora de inducción</label>
+              <div style="display: flex; gap: 6px;">
+                <select id="inductionHour" style="width: 50%;">
+                  <option value="00">00</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09" selected>09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                </select>
+                <select id="inductionMin" style="width: 50%;">
+                  <option value="00" selected>00</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Link de la sesión (Teams)</label>
+            <input id="teamsUrl" placeholder="Pega aquí el link de Teams">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== TAB: MINUTA ===== -->
+      <div id="sectionPost" class="hidden form-section">
+        <hr class="hr">
+
+        <div class="field-group">
+          <label>Fecha de capacitación</label>
+          <input type="date" id="postDate">
+        </div>
+
+        <div class="row">
+          <div class="field-group">
+            <label>Hora de Inicio</label>
+            <div style="display: flex; gap: 6px;">
+              <select id="startTimeHourPost" style="width: 50%;">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09" selected>09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+              </select>
+              <select id="startTimeMinPost" style="width: 50%;">
+                <option value="00" selected>00</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Hora de Finalización</label>
+            <div style="display: flex; gap: 6px;">
+              <select id="endTimeHourPost" style="width: 50%;">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11" selected>11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+              </select>
+              <select id="endTimeMinPost" style="width: 50%;">
+                <option value="00" selected>00</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Razón Social</label>
+          <input id="clientName" placeholder="Ej: Supermercado El Éxito">
+        </div>
+
+        <div class="field-group">
+          <label>Asistentes (uno por línea)</label>
+          <textarea id="postAssistants" placeholder="Nombre de los asistentes..." style="min-height: 80px;"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label>Tema de Capacitación</label>
+          <select id="postTopic">
+            <option value="Factun">Factun</option>
+            <option value="Factun Pro">Factun Pro</option>
+            <option value="Factun + QB">Factun + QB</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Contenidos cubiertos:</label>
+          <div id="capacitacionCheckboxes" style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            <!-- Se genera dinámicamente -->
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Trabajo Realizado</label>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 6px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
+              <input type="checkbox" id="checkWorkRecepcion" class="work-done-cb" data-label="Recepción de Documentos" checked style="margin:0;">
+              <span>Recepción de Documentos</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
+              <input type="checkbox" id="checkWorkImpresora" class="work-done-cb" data-label="Configuración de impresora PDV" checked style="margin:0;">
+              <span>Configuración de impresora PDV</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
+              <input type="checkbox" id="checkWorkMigracion" class="work-done-cb" data-label="Migración de datos" checked style="margin:0;">
+              <span>Migración de datos</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
+              <input type="checkbox" id="checkWorkRutas" class="work-done-cb" data-label="Rutas" checked style="margin:0;">
+              <span>Rutas</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Pendientes Cliente</label>
+          <textarea id="clientPendingsPost" placeholder="Lista de tareas del cliente..."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label>Pendientes NCQ</label>
+          <textarea id="ncqPendingsPost" placeholder="Notas sobre el aprendizaje o dudas del cliente..."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label>Link del video de la capacitación</label>
+          <input id="videoUrl" placeholder="Pega aquí el link del video">
+        </div>
+
+      </div>
+
+      <!-- ===== TAB: MENSAJES ===== -->
+      <div id="sectionSac" class="hidden form-section">
+        <hr class="hr">
+        <!-- Reservado para edición futura -->
+      </div>
+
+      <div class="btns">
+        <button class="primary" id="btnCopy" type="button">Copiar Correo</button>
+        <button class="pdf-btn" id="btnPDF" type="button">Exportar a PDF</button>
+      </div>
+
+    </div>
+
+    <div class="panel" style="position: relative;">
+      <div class="country-switch" role="group" aria-label="Selección de país">
+        <button type="button" class="country-btn active" id="btnCountryCR" data-country="CR" title="Costa Rica">🇨🇷</button>
+        <button type="button" class="country-btn" id="btnCountryRD" data-country="RD" title="República Dominicana">🇩🇴</button>
+      </div>
+      <h1>Vista previa</h1>
+      <iframe id="preview" class="preview"></iframe>
+    </div>
+
+  </div>
+
+  <div id="renderArea" style="position:fixed; left:-9999px; top:-9999px; width:800px;"></div>
+
+  <script src="factun.js" defer></script>
+</body>
+
+</html>

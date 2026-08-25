@@ -368,7 +368,7 @@ Saludos cordiales,`
           <tr>
           <td align="center" valign="top" width="660">
           <![endif]-->
-          <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin:0 auto; display:inline-table; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
+          <table role="presentation" width="660" align="center" cellpadding="0" cellspacing="0" border="0" style="width:660px; max-width:660px; min-width:660px; margin:0 auto; display:table; background-color:#ffffff; border-radius:10px; overflow:hidden; border-collapse:collapse; border-spacing:0; text-align:left;">
           <tr>
             <td align="center" width="660" style="width:660px; background-color:${theme.darkColor}; padding:30px; text-align:center; border-bottom:4px solid ${theme.lightColor};">
               <img src="${resolveUrl(theme.logo)}" alt="Qupos" width="90" height="90" style="width:90px; height:90px; border:0; display:inline-block;">
@@ -568,11 +568,11 @@ Saludos cordiales,`
   
   <table class="info-table">
     <tr>
-      <td width="55%"><strong>Cliente / Razón comercial:</strong> ${escapeHtml(clientName)}</td>
+      <td width="55%"><strong>Razón Comercial:</strong> ${escapeHtml(clientName)}</td>
       <td width="45%"><strong>Fecha de emisión:</strong> ${installDate || "Por definir"}</td>
     </tr>
     <tr>
-      <td><strong>Licencia / Versión Qupos:</strong> ${escapeHtml(version)}</td>
+      <td><strong>Licencia Qupos:</strong> ${escapeHtml(version)}</td>
       <td><strong>Coordinador NCQ:</strong> ${escapeHtml(implanter)}</td>
     </tr>
   </table>
@@ -616,6 +616,7 @@ Saludos cordiales,`
 
   function updateSubject() {
     const clientNameText = val("clientName").trim() || "Razón Comercial";
+    const clientSocialText = val("clientSocialName").trim() || clientNameText;
     let baseSubject = "";
     
     if (activeTab === "onboarding") {
@@ -628,7 +629,8 @@ Saludos cordiales,`
       baseSubject = `Minuta Razón Comercial ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`;
     }
     
-    const finalSubject = baseSubject.replace("Razón Comercial", clientNameText);
+    const replacementText = activeTab === "onboarding" ? clientSocialText : clientNameText;
+    const finalSubject = baseSubject.replace("Razón Comercial", replacementText);
     const subjectEl = $("subject");
     if (subjectEl) {
       subjectEl.textContent = finalSubject;
@@ -651,10 +653,13 @@ Saludos cordiales,`
     if (divName) {
       divName.classList.toggle("hidden", isOnboarding);
     }
+    const divSocialName = $("divClientSocialName");
+    if (divSocialName) {
+      divSocialName.classList.toggle("hidden", !isOnboarding);
+    }
     const divContact = $("divClientContact");
     if (divContact) {
       divContact.classList.toggle("hidden", !isOnboarding);
-      divContact.style.gridColumn = isOnboarding ? "span 2" : "auto";
     }
 
     // Toggle onboarding template alerts
@@ -1028,8 +1033,30 @@ Saludos cordiales,`
   if (copySubjectBtn) {
     copySubjectBtn.onclick = async () => {
       const text = updateSubject();
+      let success = false;
       try {
-        await navigator.clipboard.writeText(text);
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(text);
+          success = true;
+        }
+      } catch (e) {
+        console.error("navigator.clipboard.writeText failed, trying fallback", e);
+      }
+
+      if (!success) {
+        try {
+          const el = document.createElement("textarea");
+          el.value = text;
+          document.body.appendChild(el);
+          el.select();
+          success = document.execCommand("copy");
+          document.body.removeChild(el);
+        } catch (execErr) {
+          console.error("execCommand fallback failed", execErr);
+        }
+      }
+
+      if (success) {
         copySubjectBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#2e7d32" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
         setTimeout(() => {
           copySubjectBtn.innerHTML = `
@@ -1037,8 +1064,8 @@ Saludos cordiales,`
               <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
             </svg>`;
         }, 1500);
-      } catch (e) {
-        console.error("Failed to copy subject:", e);
+      } else {
+        alert("No se pudo copiar el asunto.");
       }
     };
   }
