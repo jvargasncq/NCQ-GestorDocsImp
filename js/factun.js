@@ -48,14 +48,55 @@
       "Inventario"
     ],
     "Factun + QB": [
+      "Integración",
       "Mantenimientos",
-      "Ventas",
-      "Recepción",
-      "Reportes",
-      "Administrativo",
-      "Cuentas por Cobrar",
-      "Inventario",
-      "QuickBooks"
+      "Recepción"
+    ]
+  };
+
+  const FACTUN_TOPIC_DETAILS = {
+    "Mantenimientos": [
+      "Proceso de creación de clientes y productos.",
+      "Procesos de creación y asignación de marcas y grupos de productos.",
+      "Actualización de tipo de cambio."
+    ],
+    "Ventas": [
+      "Generación de facturas y tiquetes electrónicos.",
+      "Proceso de creación de notas de débito y crédito."
+    ],
+    "Recepción": [
+      "Proceso de recepción de documentos a través del buzón.",
+      "Mantenimiento de proveedores y generación de facturas de compras."
+    ],
+    "Reportes": [
+      "Generación y análisis de reportes de ventas, compras y control general."
+    ],
+    "Administrativo": [
+      "Confirmación de credenciales de acceso.",
+      "Gestión de cuenta y perfiles de facturación.",
+      "Proceso de agregar usuarios adicionales."
+    ],
+    "Cuentas por Cobrar": [
+      "Gestión y revisión de cobros a clientes.",
+      "Control de saldos, estados de cuenta y facturas vencidas."
+    ],
+    "Inventario": [
+      "Consulta de existencias actuales e historial de existencias.",
+      "Administración y gestión de bodegas.",
+      "Procesos de movimientos de inventario y toma física de mercadería."
+    ],
+    "Integración": [
+      "Sincronización de clientes, artículos y proveedores.",
+      "Visualización del estado de los documentos desde Factun."
+    ],
+    "QuickBooks_Mantenimientos": [
+      "Creación de clientes y productos desde QuickBooks.",
+      "Asignación de códigos CABYS desde Factun.",
+      "Configuración de exoneraciones desde Factun."
+    ],
+    "QuickBooks_Recepción": [
+      "Recepción de documentos y envío a QuickBooks mediante el buzón.",
+      "Mantenimiento de proveedores y generación de facturas de compra."
     ]
   };
 
@@ -262,7 +303,34 @@
 
   function getPostData() {
     const checkedModules = Array.from(document.querySelectorAll(".topic-module-cb:checked")).map(cb => cb.dataset.label);
-    const checkedWork = Array.from(document.querySelectorAll(".work-done-cb:checked")).map(cb => cb.dataset.label);
+    
+    const checkedWork = [];
+    if ($("checkWorkRecepcion") && $("checkWorkRecepcion").checked) {
+      checkedWork.push("Se configuró el reenvío automático desde el correo de recepción de facturas hacia el sistema Factun.");
+    }
+    if ($("checkWorkQuickBooks") && $("checkWorkQuickBooks").checked) {
+      checkedWork.push("Se realizó la configuración de QuickBooks y la integración con Factun.");
+    }
+    if ($("checkWorkImpresora") && $("checkWorkImpresora").checked) {
+      checkedWork.push("Se realizó la instalación del utilitario de impresión.");
+    }
+    if ($("checkWorkMigracion") && $("checkWorkMigracion").checked) {
+      const migClientes = $("checkWorkMigracionClientes") && $("checkWorkMigracionClientes").checked;
+      const migProductos = $("checkWorkMigracionProductos") && $("checkWorkMigracionProductos").checked;
+      if (migClientes && migProductos) {
+        checkedWork.push("Se realizó la migración de información de Clientes y Productos.");
+      } else if (migClientes) {
+        checkedWork.push("Se realizó la migración de información de Clientes.");
+      } else if (migProductos) {
+        checkedWork.push("Se realizó la migración de información de Productos.");
+      } else {
+        checkedWork.push("Se realizó la migración de datos.");
+      }
+    }
+    if ($("checkWorkRutas") && $("checkWorkRutas").checked) {
+      checkedWork.push("Se asistió en la instalación de la aplicación Factun y se explicó el proceso para realizar la impresión desde el dispositivo móvil.");
+    }
+
     return {
       postTopic: val("postTopic"),
       checkedModules,
@@ -483,6 +551,7 @@
 
     const videoBlock = p.videoUrl
       ? `
+        <h3 style="color: #170d66; font-family: Arial, sans-serif; font-size: 16px; margin: 24px 0 10px 0; border-bottom: 2px solid #00a8ff; padding-bottom: 6px; font-weight: bold;">Material de Apoyo</h3>
         <table class="no-print" role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 16px auto; border-collapse: collapse;">
           <tr>
             <td align="center" style="border-radius: 4px; background-color: #00a8ff;">
@@ -505,9 +574,16 @@
     const modulesHtml = p.checkedModules.length > 0
       ? `
         <h3 style="color: #170d66; font-family: Arial, sans-serif; font-size: 16px; margin: 24px 0 10px 0; border-bottom: 2px solid #00a8ff; padding-bottom: 6px; font-weight: bold;">Módulos impartidos</h3>
-        <ul style="margin: 0 0 14px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 14.5px; line-height: 1.6; color: #333333;">
-          ${p.checkedModules.map(m => `<li style="margin-bottom: 4px;">${escapeHtml(m)}</li>`).join("")}
-        </ul>
+        ${p.checkedModules.map(m => {
+          const key = (p.postTopic === "Factun + QB" && (m === "Mantenimientos" || m === "Recepción")) ? `QuickBooks_${m}` : m;
+          const points = FACTUN_TOPIC_DETAILS[key] || [];
+          return `
+            <p style="margin: 12px 0 6px 0; font-family: Arial, sans-serif; font-size: 15px; color: #333333;"><strong>${escapeHtml(m)}</strong></p>
+            <ul style="margin: 0 0 14px 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 14.5px; line-height: 1.6; color: #333333;">
+              ${points.map(pt => `<li style="margin-bottom: 4px;">${escapeHtml(pt)}</li>`).join("")}
+            </ul>
+          `;
+        }).join("")}
       `
       : '';
 
@@ -556,21 +632,117 @@
     });
   }
 
-  function buildSacEmail(common) {
-    const greeting = buildGreeting(common.clientContact || common.clientName);
-    const bodyHtml = `<p style="margin:0; font-family:Arial,sans-serif; font-size:15px; color:#333333;">Contenido Mensajes por definir...</p>`;
-    const countryInfo = SOCIAL[common.country] || SOCIAL.CR;
-    const socialRow = buildSocialRow(countryInfo);
+  function getSacRawTextMessage() {
+    const type = val("sacMsgType");
+    let text = "";
 
-    return buildBaseEmailShell({
-      headerTitle: "Mensajes · Factun",
-      greeting,
-      bodyHtml,
-      helpUrl: escapeHtml(common.helpUrl),
-      supportChat: escapeHtml(common.supportChat),
-      socialRow,
-      countryLabel: countryInfo.label
-    });
+    if (type === "teams_sac") {
+      const client = val("sacClientName").trim() || "[Razón Social]";
+      
+      const workList = ["Cuenta y perfil de facturación"];
+      if ($("sacSwitchInduccion") && $("sacSwitchInduccion").checked) {
+        workList.push("Inducción de uso del sistema");
+      }
+      if ($("sacSwitchGrabacion") && $("sacSwitchGrabacion").checked) {
+        workList.push("Grabación de la sesión");
+      }
+      if ($("sacSwitchRecepcion") && $("sacSwitchRecepcion").checked) {
+        workList.push("Configuración de Recepción de documentos");
+      }
+      if ($("sacSwitchMigracion") && $("sacSwitchMigracion").checked) {
+        workList.push("Migración de datos");
+      }
+      if ($("sacSwitchQuickbooks") && $("sacSwitchQuickbooks").checked) {
+        workList.push("Configuración de QuickBooks");
+      }
+      if ($("sacSwitchImpresora") && $("sacSwitchImpresora").checked) {
+        workList.push("Configuración de impresora PDV");
+      }
+      if ($("sacSwitchAppFactun") && $("sacSwitchAppFactun").checked) {
+        workList.push("Configuración de aplicación Factun");
+      }
+
+      const work = workList.map(item => `✅ ${item}`).join("\n");
+
+      text = `📢 *Notificación de Implantación Finalizada*\n\nEstimado equipo, les informo que se ha dado por concluido el proceso de implantación para el cliente *${client}*.\n\n*Trabajo realizado:*\n${work}`;
+
+    } else if (type === "wa_saludo") {
+      const contact = val("sacClientContact").trim() || "[Nombre del Cliente]";
+      const company = val("sacClientCompany").trim() || "[Empresa]";
+      const hasInd = $("sacHasInduction") && $("sacHasInduction").checked;
+
+      const inductionText = hasInd
+        ? "Para iniciar de la mejor manera, nos gustaría coordinar su sesión de inducción. Quedo a su disposición para agendar el espacio en el horario que le sea más conveniente."
+        : "Cualquier consulta o duda en el uso de la plataforma, recuerde que estamos a su disposición a través de nuestros canales de soporte.";
+
+      text = `Hola, *${contact}*. Un gusto saludarle de parte del equipo de Factun. 😊\n\nLe informo que la cuenta de facturación electrónica para *${company}* ya se encuentra creada y activa.\n\n${inductionText}`;
+
+    } else if (type === "wa_despedida") {
+      const contact = val("sacClientContactDespedida").trim() || "[Nombre del Cliente]";
+
+      text = `Hola, *${contact}*. Espero que se encuentre muy bien.\n\nLe comparto que ya hemos enviado a su correo electrónico la minuta de la capacitación y el enlace a la grabación de la sesión para que pueda consultarla cuando lo necesite.\n\nRecuerde que el equipo de soporte sigue a su entera disposición para resolver cualquier consulta. ¡Ha sido un gusto acompañarle en este proceso! 🤝`;
+    }
+
+    return text;
+  }
+
+  function buildSacMessage() {
+    const text = getSacRawTextMessage();
+    const formattedHtml = escapeHtml(text)
+      .replace(/\n/g, "<br>")
+      .replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
+
+    const type = val("sacMsgType");
+    const isWhatsApp = type.startsWith("wa_");
+    const bubbleBg = isWhatsApp ? "#d9fdd3" : "#ffffff";
+    const bubbleBorder = isWhatsApp ? "none" : "1px solid #e0e0e0";
+    const containerBg = isWhatsApp ? "#efeae2" : "#f3f2f1";
+    const bubbleHeader = isWhatsApp 
+      ? `<div style="font-size:12px; color:#128c7e; font-weight:bold; margin-bottom:4px; font-family:Arial,sans-serif;">WhatsApp</div>`
+      : `<div style="font-size:12px; color:#6264a7; font-weight:bold; margin-bottom:4px; font-family:Arial,sans-serif;">Microsoft Teams</div>`;
+
+    return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  body {
+    margin: 0;
+    padding: 20px;
+    background-color: ${containerBg};
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .bubble {
+    max-width: 550px;
+    margin: 20px auto;
+    background: ${bubbleBg};
+    border: ${bubbleBorder};
+    padding: 14px 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #333333;
+    word-break: break-word;
+  }
+  .copy-notice {
+    text-align: center;
+    font-size: 12px;
+    color: #666666;
+    margin-top: 15px;
+    font-style: italic;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+</style>
+</head>
+<body>
+  <div class="bubble">
+    ${bubbleHeader}
+    <div>${formattedHtml}</div>
+  </div>
+  <div class="copy-notice">Al presionar "Copiar Mensaje" se copiará el texto plano con formato listo para pegar.</div>
+</body>
+</html>`;
   }
 
   function render() {
@@ -581,7 +753,7 @@
     } else if (activeTemplate === "post") {
       html = buildPostEmail(common, getPostData());
     } else if (activeTemplate === "sac") {
-      html = buildSacEmail(common);
+      html = buildSacMessage();
     }
 
     $("preview").srcdoc = html;
@@ -594,6 +766,25 @@
     if (indFields) {
       indFields.classList.toggle("hidden", !has);
     }
+  }
+
+  function syncMigracionFields() {
+    const has = $("checkWorkMigracion") && $("checkWorkMigracion").checked;
+    const migSub = $("divWorkMigracionSub");
+    if (migSub) {
+      migSub.classList.toggle("hidden", !has);
+    }
+  }
+
+  function syncSacFields() {
+    const type = val("sacMsgType");
+    const divTeams = $("divSacTeamsFields");
+    const divSaludo = $("divSacSaludoFields");
+    const divDespedida = $("divSacDespedidaFields");
+
+    if (divTeams) divTeams.classList.toggle("hidden", type !== "teams_sac");
+    if (divSaludo) divSaludo.classList.toggle("hidden", type !== "wa_saludo");
+    if (divDespedida) divDespedida.classList.toggle("hidden", type !== "wa_despedida");
   }
 
   function updateCapacitacionUI() {
@@ -614,6 +805,19 @@
       lbl.querySelector("input").onchange = scheduleRender;
       container.appendChild(lbl);
     });
+
+    updateDownloadBtnVisibility();
+  }
+
+  function updateDownloadBtnVisibility() {
+    const btnDownload = $("btnDownloadGuide");
+    if (!btnDownload) return;
+    
+    const activeTopic = val("postTopic");
+    const isQBTopic = activeTopic === "Factun + QB";
+    const isPostTab = activeTemplate === "post";
+    
+    btnDownload.classList.toggle("hidden", !(isPostTab && isQBTopic));
   }
 
   // --- COUNTRY SELECTION VIA FLAGS SWITCH ---
@@ -651,11 +855,28 @@
       welcomeCommon.classList.toggle("hidden", which !== "welcome");
     }
 
+    // Hide subject field group when in Mensajes tab
+    const subjectGroup = $("divSubjectFieldGroup");
+    if (subjectGroup) {
+      subjectGroup.classList.toggle("hidden", which === "sac");
+    }
+
     if (which === "post") {
       updateCapacitacionUI();
     }
 
+    // Toggle copy button label and PDF export button
+    const copyBtn = $("btnCopy");
+    if (copyBtn) {
+      copyBtn.textContent = which === "sac" ? "Copiar Mensaje" : "Copiar Correo";
+    }
+    const pdfBtn = $("btnPDF");
+    if (pdfBtn) {
+      pdfBtn.classList.toggle("hidden", which === "sac");
+    }
+
     updateSubject();
+    updateDownloadBtnVisibility();
     scheduleRender();
   }
 
@@ -732,7 +953,9 @@
   $("btnCountryRD").addEventListener("click", () => selectCountry("RD"));
 
   $("hasInduction").addEventListener("change", () => { syncInductionFields(); scheduleRender(); });
+  $("checkWorkMigracion").addEventListener("change", () => { syncMigracionFields(); scheduleRender(); });
   $("postTopic").addEventListener("change", () => { updateCapacitacionUI(); scheduleRender(); });
+  $("sacMsgType").addEventListener("change", () => { syncSacFields(); scheduleRender(); });
 
   // Copy Subject action
   const copySubjectBtn = $("btnCopySubject");
@@ -748,21 +971,39 @@
     };
   }
 
-  // Copy Email Body action
+  // Copy Email Body / Message action
   const copyBtn = $("btnCopy");
   if (copyBtn) {
     copyBtn.onclick = async () => {
-      const html = render();
-      const text = $("preview").contentWindow.document.body.innerText;
-      try {
-        const clipboardItem = new ClipboardItem({
-          "text/html": new Blob([html], { type: "text/html" }),
-          "text/plain": new Blob([text], { type: "text/plain" })
-        });
-        await navigator.clipboard.write([clipboardItem]);
-        showCopySuccess(copyBtn);
-      } catch (err) {
-        console.error("Failed to copy content:", err);
+      if (activeTemplate === "sac") {
+        const rawText = getSacRawTextMessage();
+        try {
+          await navigator.clipboard.writeText(rawText);
+          showCopySuccess(copyBtn);
+        } catch (err) {
+          console.error("Failed to copy plain text:", err);
+          // Fallback
+          const el = document.createElement("textarea");
+          el.value = rawText;
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand("copy");
+          document.body.removeChild(el);
+          showCopySuccess(copyBtn);
+        }
+      } else {
+        const html = render();
+        const text = $("preview").contentWindow.document.body.innerText;
+        try {
+          const clipboardItem = new ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([text], { type: "text/plain" })
+          });
+          await navigator.clipboard.write([clipboardItem]);
+          showCopySuccess(copyBtn);
+        } catch (err) {
+          console.error("Failed to copy content:", err);
+        }
       }
     };
   }
@@ -776,6 +1017,17 @@
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
       }
+    };
+  }
+
+  // Download Guide
+  const downloadBtn = $("btnDownloadGuide");
+  if (downloadBtn) {
+    downloadBtn.onclick = () => {
+      const link = document.createElement("a");
+      link.href = "assets/Guia_Induccion_Factun_Quickbooks_CR.pdf";
+      link.download = "Guia_Induccion_Factun_Quickbooks_CR.pdf";
+      link.click();
     };
   }
 
@@ -793,7 +1045,10 @@
     "postTopic", "postDate", "startTimeHourPost", "startTimeMinPost",
     "endTimeHourPost", "endTimeMinPost", "postAssistants", "clientPendingsPost",
     "ncqPendingsPost", "videoUrl",
-    "checkWorkRecepcion", "checkWorkImpresora", "checkWorkMigracion", "checkWorkRutas"
+    "checkWorkRecepcion", "checkWorkQuickBooks", "checkWorkImpresora",
+    "checkWorkMigracion", "checkWorkMigracionClientes", "checkWorkMigracionProductos", "checkWorkRutas",
+    "sacMsgType", "sacClientName", "sacSwitchInduccion", "sacSwitchGrabacion", "sacSwitchRecepcion", "sacSwitchMigracion", "sacSwitchQuickbooks", "sacSwitchImpresora", "sacSwitchAppFactun",
+    "sacClientContact", "sacClientCompany", "sacHasInduction", "sacClientContactDespedida"
   ];
 
   inputsToWatch.forEach(id => {
@@ -815,6 +1070,8 @@
 
   // Init
   syncInductionFields();
+  syncMigracionFields();
+  syncSacFields();
   updateCapacitacionUI();
   selectCountry("CR"); // Force CR as default and load defaults
   initializeDates();

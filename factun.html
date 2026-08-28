@@ -10,7 +10,7 @@
   <link rel="preload" href="https://www.factun.com/assets/logo-factun-blanco-DB0yF7As.png" as="image" />
   <link rel="preload" href="https://www.factun.com/images/fb.png" as="image" />
   <link rel="preload" href="https://www.factun.com/images/ig.png" as="image" />
-  <link rel="stylesheet" href="factun.css" />
+  <link rel="stylesheet" href="css/factun.css" />
 </head>
 
 <body>
@@ -19,8 +19,7 @@
       <a class="brand" href="factun.html">
         <img src="https://www.factun.com/assets/logo-factun-CX_BAVCL.png" alt="Factun">
         <div class="brand-copy">
-          <div class="t">Centro de trabajo Factun</div>
-          <div class="s">Accesos internos</div>
+          <div class="t">Centro de trabajo Implantaciones</div>
         </div>
       </a>
       <div class="topbar-main">
@@ -44,7 +43,7 @@
         <button class="tab" id="tabSac" type="button" data-tab="sac">Mensajes</button>
       </div>
 
-      <div class="field-group">
+      <div id="divSubjectFieldGroup" class="field-group">
         <label>Asunto</label>
         <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255, 255, 255, 0.4); padding: 10px 14px; min-height: 42px; backdrop-filter: blur(4px);">
           <div id="subjectLabel" style="font-weight: bold; font-size: 13px; color: var(--text); flex: 1;">
@@ -65,7 +64,7 @@
       <div id="welcomeCommonFields" style="display: flex; flex-direction: column; gap: 20px;">
         <div class="field-group">
           <label>Cliente a cargo</label>
-          <input id="clientContact" placeholder="Ej: Juan Pérez">
+          <input id="clientContact" placeholder="Nombre Cliente">
         </div>
 
         <div class="field-group">
@@ -231,7 +230,7 @@
 
         <div class="field-group">
           <label>Razón Social</label>
-          <input id="clientName" placeholder="Ej: Supermercado El Éxito">
+          <input id="clientName" placeholder="Razón Social">
         </div>
 
         <div class="field-group">
@@ -259,19 +258,36 @@
           <label>Trabajo Realizado</label>
           <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 6px;">
             <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
-              <input type="checkbox" id="checkWorkRecepcion" class="work-done-cb" data-label="Recepción de Documentos" checked style="margin:0;">
+              <input type="checkbox" id="checkWorkRecepcion" class="work-done-cb" style="margin:0;">
               <span>Recepción de Documentos</span>
             </label>
             <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
-              <input type="checkbox" id="checkWorkImpresora" class="work-done-cb" data-label="Configuración de impresora PDV" checked style="margin:0;">
-              <span>Configuración de impresora PDV</span>
+              <input type="checkbox" id="checkWorkQuickBooks" class="work-done-cb" style="margin:0;">
+              <span>Configuración de QuickBooks</span>
             </label>
             <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
-              <input type="checkbox" id="checkWorkMigracion" class="work-done-cb" data-label="Migración de datos" checked style="margin:0;">
+              <input type="checkbox" id="checkWorkImpresora" class="work-done-cb" style="margin:0;">
+              <span>Configuración de Impresora PDV</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
+              <input type="checkbox" id="checkWorkMigracion" class="work-done-cb" style="margin:0;">
               <span>Migración de datos</span>
             </label>
+            
+            <!-- Sub-opciones de Migración de datos -->
+            <div id="divWorkMigracionSub" class="hidden" style="margin-left: 28px; display: flex; flex-direction: column; gap: 8px; margin-top: 2px; margin-bottom: 2px;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px;">
+                <input type="checkbox" id="checkWorkMigracionClientes" style="margin:0;">
+                <span>Clientes</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px;">
+                <input type="checkbox" id="checkWorkMigracionProductos" style="margin:0;">
+                <span>Productos</span>
+              </label>
+            </div>
+
             <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px;">
-              <input type="checkbox" id="checkWorkRutas" class="work-done-cb" data-label="Rutas" checked style="margin:0;">
+              <input type="checkbox" id="checkWorkRutas" class="work-done-cb" style="margin:0;">
               <span>Rutas</span>
             </label>
           </div>
@@ -296,13 +312,124 @@
 
       <!-- ===== TAB: MENSAJES ===== -->
       <div id="sectionSac" class="hidden form-section">
-        <hr class="hr">
-        <!-- Reservado para edición futura -->
+        <div class="field-group">
+          <label>Tipo de Mensaje</label>
+          <select id="sacMsgType">
+            <option value="teams_sac" selected>Notificación SAC (Teams)</option>
+            <option value="wa_saludo">Saludo (WhatsApp)</option>
+            <option value="wa_despedida">Despedida (WhatsApp)</option>
+          </select>
+        </div>
+
+        <!-- Campos para Teams (Notificación SAC) -->
+        <div id="divSacTeamsFields" class="form-section" style="display: flex; flex-direction: column; gap: 20px; padding: 0;">
+          <div class="field-group">
+            <label>Razón Social / Comercial</label>
+            <input id="sacClientName" placeholder="Razón Social">
+          </div>
+          <div class="field-group">
+            <label>Detalles de la Notificación</label>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 8px;">
+              <!-- Grupo Obligatorios -->
+              <div>
+                <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Obligatorios</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchInduccion" checked>
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Inducción de uso del sistema</span>
+                  </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchGrabacion" checked>
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Grabación de la sesión</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Grupo Adicionales -->
+              <div>
+                <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Adicionales</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchRecepcion">
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Recepción de documentos</span>
+                  </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchMigracion">
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Migración de datos</span>
+                  </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchQuickbooks">
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Configuración de QuickBooks</span>
+                  </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchImpresora">
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Configuración de impresora PDV</span>
+                  </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sacSwitchAppFactun">
+                      <span class="slider"></span>
+                    </label>
+                    <span class="switch-text">Configuración de aplicación Factun</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos para Saludo (WhatsApp) -->
+        <div id="divSacSaludoFields" class="hidden form-section" style="display: flex; flex-direction: column; gap: 20px; padding: 0;">
+          <div class="field-group">
+            <label>Cliente a cargo</label>
+            <input id="sacClientContact" placeholder="Nombre Cliente">
+          </div>
+          <div class="field-group">
+            <label>Razón Comercial</label>
+            <input id="sacClientCompany" placeholder="Razón Social">
+          </div>
+          <div class="field-group">
+            <div class="switch-container">
+              <label class="switch">
+                <input type="checkbox" id="sacHasInduction" checked>
+                <span class="slider"></span>
+              </label>
+              <span class="switch-text">Coordinar Inducción</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos para Despedida (WhatsApp) -->
+        <div id="divSacDespedidaFields" class="hidden form-section" style="display: flex; flex-direction: column; gap: 20px; padding: 0;">
+          <div class="field-group">
+            <label>Cliente a cargo</label>
+            <input id="sacClientContactDespedida" placeholder="Nombre Cliente">
+          </div>
+        </div>
       </div>
 
       <div class="btns">
         <button class="primary" id="btnCopy" type="button">Copiar Correo</button>
         <button class="pdf-btn" id="btnPDF" type="button">Exportar a PDF</button>
+        <button class="download-btn hidden" id="btnDownloadGuide" type="button">Descargar Guía</button>
       </div>
 
     </div>
@@ -320,7 +447,7 @@
 
   <div id="renderArea" style="position:fixed; left:-9999px; top:-9999px; width:800px;"></div>
 
-  <script src="factun.js" defer></script>
+  <script src="js/factun.js" defer></script>
 </body>
 
 </html>
